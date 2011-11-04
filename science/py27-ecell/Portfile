@@ -3,7 +3,7 @@
 
 PortSystem          1.0
 
-name                py26-ecell
+name                py27-ecell
 version             3.2.3pre1
 revision            0
 categories          science
