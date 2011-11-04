@@ -3,8 +3,7 @@
 
 PortSystem          1.0
 
-base_name           ecell
-name                py26-${base_name}
+name                py26-ecell
 version             3.2.3pre1
 revision            0
 categories          science
@@ -17,14 +16,14 @@ for modeling, simulation, and analysis of large scale complex systems \
 such as biological cells. Core part of the system, E-Cell Simulation \
 Environment version 3, allows many components driven by multiple \
 algorithms with different timescales to coexist.
-conflicts           ${base_name} py26-${base_name}
+conflicts           ecell py26-ecell
 
 if {[regexp {^11\.} ${os.version}]} then {
     default_variants +python27 -atlas -gcc43 -gcc44 -gcc45
 } 
 
 master_sites        http://github.com/downloads/ecell/ecell3/
-distname            ${base_name}-${version}
+distname            ecell-${version}
 checksums           md5     0cede77b254595040f533694921cb013 \
                     sha1    176da828b0916f1e30593b9f2ae5c0c065334f8e \
                     rmd160  9dfae309dc2ba17398cb4c9549e8ec1c537e9efe
