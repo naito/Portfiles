@@ -1,0 +1,69 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; truncate-lines: t; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:et:sw=4:ts=4:sts=4
+# $Id$
+
+PortSystem          1.0
+
+base_name           ecell
+name                py26-${base_name}
+version             3.2.2
+revision            2
+categories          science
+maintainers         sfc.keio.ac.jp:ynaito
+license             GPLv2
+homepage            http://www.e-cell.org/
+description         E-Cell Simulation Environment (E-Cell SE)
+long_description    E-Cell System is an object-oriented software suite \
+for modeling, simulation, and analysis of large scale complex systems \
+such as biological cells. Core part of the system, E-Cell Simulation \
+Environment version 3, allows many components driven by multiple \
+algorithms with different timescales to coexist.
+conflicts           py27-${base_name}
+
+if {[regexp {^10\.} ${os.version}]} then {
+    default_variants +python26 -atlas -gcc43 -gcc44 -gcc45
+}
+
+master_sites        sourceforge:${base_name}
+distname            ${base_name}-${version}
+checksums           md5     1a244ec931962e0c2083c33d1a94410b \
+                    sha1    ad1ba4d10da7622f0c233c313b0c7f6697d2807a \
+                    rmd160  6cfdc90f814b43526c2e20b8239579738d400e78
+
+patchfiles          patch-setup.py.in.diff \
+                    patch-Makefile.in.diff \
+                    patch-Polymorph.hpp.diff
+
+depends_lib         port:py26-gtk \
+                    path:lib/libboost_python.a:boost \
+                    port:gsl \
+                    port:py26-ply
+
+configure.env-append PYTHONPATH="${prefix}/Library/Frameworks/Python.framework/Versions/2.6/lib/python2.6/site-packages:${prefix}/lib/python2.6/site-packages"
+configure.args-append   --build=${build_arch}-apple-${os.platform}${os.version}
+
+pre-fetch {
+    if {![file exists ${prefix}/lib/libboost_python.a]} {
+        if {[file exists ${prefix}/lib/libboost_filesystem.a]} {
+            ui_error "Please uninstall or deactivate the boost port and reinstall it by running `port install boost +python26`."
+        }
+        else {
+            ui_error "Please install boost with the python26 variant by running `port install boost +python26`."
+        }
+            error "boost must be installed with the python26 variant enabled."
+    }
+}
+
+post-destroot {
+	set changearg "-change ${prefix}/Library/Frameworks/Python.framework/Versions/2.6/Python /System/Library/Frameworks/Python.framework/Versions/2.6/Python"
+
+	system "install_name_tool ${changearg} ${prefix}/lib/libboost_python.dylib"
+	system "install_name_tool ${changearg} ${prefix}/lib/libboost_python-mt.dylib"
+	#system "install_name_tool ${changearg} ${prefix}/lib/libboost_python-d.dylib"
+	#system "install_name_tool ${changearg} ${prefix}/lib/libboost_python-mt-d.dylib"
+}
+
+#variant no_x11 {}
+#variant quartz {}
+
+#variant ja {}
+
