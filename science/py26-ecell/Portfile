@@ -5,7 +5,7 @@ PortSystem          1.0
 
 name                py26-ecell
 version             3.2.2
-revision            2
+revision            3
 categories          science
 maintainers         sfc.keio.ac.jp:ynaito
 license             GPLv2
@@ -30,7 +30,8 @@ checksums           md5     1a244ec931962e0c2083c33d1a94410b \
 
 patchfiles          patch-setup.py.in.diff \
                     patch-Makefile.in.diff \
-                    patch-Polymorph.hpp.diff
+                    patch-Polymorph.hpp.diff\
+                    patch-ga.py.diff
 
 depends_lib         port:py26-gtk \
                     path:lib/libboost_python.a:boost \
