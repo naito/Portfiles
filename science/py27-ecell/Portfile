@@ -3,7 +3,9 @@
 
 PortSystem          1.0
 
-name                py27-ecell
+set base_name       "ecell"
+
+name                py27-${base_name}
 version             3.2.3pre1
 revision            0
 categories          science
@@ -16,14 +18,14 @@ for modeling, simulation, and analysis of large scale complex systems \
 such as biological cells. Core part of the system, E-Cell Simulation \
 Environment version 3, allows many components driven by multiple \
 algorithms with different timescales to coexist.
-conflicts           ecell py26-ecell
+conflicts           ecell py26-${base_name}
 
 if {[regexp {^11\.} ${os.version}]} then {
     default_variants +python27 -atlas -gcc43 -gcc44 -gcc45
 } 
 
 master_sites        http://github.com/downloads/ecell/ecell3/
-distname            ecell-${version}
+distname            ${base_name}-${version}
 checksums           md5     0cede77b254595040f533694921cb013 \
                     sha1    176da828b0916f1e30593b9f2ae5c0c065334f8e \
                     rmd160  9dfae309dc2ba17398cb4c9549e8ec1c537e9efe
@@ -46,7 +48,32 @@ if {${configure.compiler} == "clang"} {
         configure.compiler llvm-gcc-4.2
 }
 
+notes \
+"**********************************************************************
+To use ecell3-session-monitor, please set environment 
+variable PYTHONPATH as following:
+
+For sh, bash:
+export PYTHONPATH=\"/opt/local/Library/Frameworks/Python.framework/\\
+Versions/2.7/lib/python2.7/site-packages:/opt/local/lib/python2.7/site-packages\"
+
+For csh, tcsh:
+setenv PYTHONPATH \"/opt/local/Library/Frameworks/Python.framework/\\
+Versions/2.7/lib/python2.7/site-packages:/opt/local/lib/python2.7/site-packages\"
+**********************************************************************"
+
+
 pre-fetch {
+
+    if {![regexp {^11\.} ${os.version}]} then {
+        error "
+   ************************************************
+    py27-${base_name} is a package for OS X Lion (10.7).
+    For Mac OS X Snow Leopard (10.6) or earlier, 
+    please install py26-${base_name}.
+   ************************************************"
+    } 
+
     if {![file exists ${prefix}/lib/libboost_python.a]} {
         if {[file exists ${prefix}/lib/libboost_filesystem.a]} {
             ui_error "Please uninstall or deactivate the boost port and reinstall it by running `port install boost +python27`."
@@ -63,8 +90,6 @@ post-destroot {
 
 	system "install_name_tool ${changearg} ${prefix}/lib/libboost_python.dylib"
 	system "install_name_tool ${changearg} ${prefix}/lib/libboost_python-mt.dylib"
-	#system "install_name_tool ${changearg} ${prefix}/lib/libboost_python-d.dylib"
-	#system "install_name_tool ${changearg} ${prefix}/lib/libboost_python-mt-d.dylib"
 }
 
 #variant no_x11 {}
