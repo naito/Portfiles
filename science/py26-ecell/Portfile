@@ -4,8 +4,8 @@
 PortSystem          1.0
 
 name                py26-ecell
-version             3.2.3pre1
-revision            0
+version             3.2.2
+revision            2
 categories          science
 maintainers         sfc.keio.ac.jp:ynaito
 license             GPLv2
@@ -22,18 +22,15 @@ if {[regexp {^10\.} ${os.version}]} then {
     default_variants +python26 -atlas -gcc43 -gcc44 -gcc45
 }
 
-master_sites        http://github.com/downloads/ecell/ecell3/
+master_sites        sourceforge:ecell
 distname            ecell-${version}
-checksums           md5     0cede77b254595040f533694921cb013 \
-                    sha1    176da828b0916f1e30593b9f2ae5c0c065334f8e \
-                    rmd160  9dfae309dc2ba17398cb4c9549e8ec1c537e9efe
-extract.suffix      .tar.bz2
-use_bzip2           yes
+checksums           md5     1a244ec931962e0c2083c33d1a94410b \
+                    sha1    ad1ba4d10da7622f0c233c313b0c7f6697d2807a \
+                    rmd160  6cfdc90f814b43526c2e20b8239579738d400e78
 
-patchfiles          patch-Polymorph.hpp.diff\
-                    patch-Makefile.in.diff\
-                    patch-setup.py.in.diff\
-                    patch-ga.py.diff
+patchfiles          patch-setup.py.in.diff \
+                    patch-Makefile.in.diff \
+                    patch-Polymorph.hpp.diff
 
 depends_lib         port:py26-gtk \
                     path:lib/libboost_python.a:boost \
@@ -60,6 +57,8 @@ post-destroot {
 
 	system "install_name_tool ${changearg} ${prefix}/lib/libboost_python.dylib"
 	system "install_name_tool ${changearg} ${prefix}/lib/libboost_python-mt.dylib"
+	#system "install_name_tool ${changearg} ${prefix}/lib/libboost_python-d.dylib"
+	#system "install_name_tool ${changearg} ${prefix}/lib/libboost_python-mt-d.dylib"
 }
 
 #variant no_x11 {}
