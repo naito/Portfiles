@@ -1,36 +1,20 @@
---- ./ecell/libecs/Polymorph.orig.hpp	2011-10-28 19:18:21.000000000 +0900
-+++ ./ecell/libecs/Polymorph.hpp	2011-11-04 22:51:11.000000000 +0900
-@@ -1151,21 +1151,21 @@
- #endif
+--- ./ecell/libecs/Polymorph.hpp.orig	2011-01-04 17:17:05.000000000 +0900
++++ ./ecell/libecs/Polymorph.hpp	2011-04-24 22:25:54.000000000 +0900
+@@ -1145,6 +1145,8 @@
+     typedef libecs::PolymorphValue::Tuple::value_type const* type;
+ };
  
++namespace range_adl_barrier
++{
  template<>
--inline typename boost::range_iterator< libecs::PolymorphValue::Tuple >::type
-+inline boost::range_iterator< libecs::PolymorphValue::Tuple >::type
+ inline range_iterator< libecs::PolymorphValue::Tuple >::type
  begin< libecs::PolymorphValue::Tuple >( libecs::PolymorphValue::Tuple& r )
- {
-     return static_cast< libecs::Polymorph* >( r );
+@@ -1175,7 +1177,7 @@
+     return static_cast< libecs::Polymorph const* >( r ) + r.size();
  }
  
- template<>
--inline typename boost::range_const_iterator< libecs::PolymorphValue::Tuple >::type
-+inline boost::range_const_iterator< libecs::PolymorphValue::Tuple >::type
- begin< libecs::PolymorphValue::Tuple >( libecs::PolymorphValue::Tuple const& r )
- {
-     return static_cast< libecs::Polymorph const* >( r );
- }
+-} // namespace boost
++}} // namespace boost::range_adl_barrier
  
- template<>
--inline typename boost::range_iterator< libecs::PolymorphValue::Tuple >::type
-+inline boost::range_iterator< libecs::PolymorphValue::Tuple >::type
- end< libecs::PolymorphValue::Tuple >(
-         libecs::PolymorphValue::Tuple& r )
- {
-@@ -1173,7 +1173,7 @@
- }
- 
- template<>
--inline typename boost::range_const_iterator< libecs::PolymorphValue::Tuple >::type
-+inline boost::range_const_iterator< libecs::PolymorphValue::Tuple >::type
- end< libecs::PolymorphValue::Tuple >(
-         libecs::PolymorphValue::Tuple const& r )
+ namespace libecs
  {
