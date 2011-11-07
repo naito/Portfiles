@@ -22,45 +22,46 @@ Usage 使い方
 
 ### 初期設定
 
-レポジトリのクローンを ~/github/ に作成した場合
-Portindexファイルを作成する
+* レポジトリのクローンを ~/github/ に作成した場合
 
-    cd ~/github/Portfiles
-    portindex
+* Portindexファイルを作成する
 
-MacPortsの設定ファイルPortfilesのクローンを登録する
+        cd ~/github/Portfiles
+        portindex
 
-    sudo chmod +w /opt/local/etc/macports/sources.conf
-    sudo emacs /opt/local/etc/macports/sources.conf
+* MacPortsの設定ファイルPortfilesのクローンを登録する
 
-MacPortsサーバのURLの前に、ローカルのURLを加えて保存する
+        sudo chmod +w /opt/local/etc/macports/sources.conf
+        sudo emacs /opt/local/etc/macports/sources.conf
 
-    # To get the ports tree from the master MacPorts server in California, USA use:
-    #   rsync://rsync.macports.org/release/ports/
-    # To get it from the mirror in Trondheim, Norway use:
-    #   rsync://trd.no.rsync.macports.org/release/ports/
-    # A urrent list of mirrors is available at http://trac.macports.org/wiki/Mirrors
-    file:///Users/foo/github/Portfiles/
-    rsync://rsync.macports.org/release/ports/ [default]
+* MacPortsサーバのURLの前に、ローカルのURLを加えて保存する
 
-設定ファイルの書き込み権限を戻し、MacPortsをselfupdateする
+        # To get the ports tree from the master MacPorts server in California, USA use:
+        #   rsync://rsync.macports.org/release/ports/
+        # To get it from the mirror in Trondheim, Norway use:
+        #   rsync://trd.no.rsync.macports.org/release/ports/
+        # A urrent list of mirrors is available at http://trac.macports.org/wiki/Mirrors
+        file:///Users/foo/github/Portfiles/
+        rsync://rsync.macports.org/release/ports/ [default]
 
-    sudo chmod -w /opt/local/etc/macports/sources.conf
-    sudo port -v selfupdate
+* 設定ファイルの書き込み権限を戻し、MacPortsをselfupdateする
+
+        sudo chmod -w /opt/local/etc/macports/sources.conf
+        sudo port -v selfupdate
 
 ### ポートのインストール
 
-E-Cell3 for Mac OS X 10.6 or earlier.
+* E-Cell3 for Mac OS X 10.6 or earlier.
 
-    sudo port install py26-ecell
+        sudo port install py26-ecell
 
-E-Cell3 for Mac OS X 10.7
+* E-Cell3 for Mac OS X 10.7
 
-    sudo port install py27-ecell
+        sudo port install py27-ecell
 
 ### ポートの更新
 
-Portfilesの内容が更新された際に、インストール済みのポートを更新するには：
+* Portfilesの内容が更新された際に、インストール済みのポートを更新するには：
 
-    sudo port selfupdate
-    sudo port upgrade {port name}
+        sudo port selfupdate
+        sudo port upgrade {port name}
