@@ -36,11 +36,11 @@ Usage 使い方
 
 * MacPortsサーバのURLの前に、ローカルのURLを加えて保存する
 
-    # To get the ports tree from the master MacPorts server in California, USA use:
-    #   rsync://rsync.macports.org/release/ports/
-    # To get it from the mirror in Trondheim, Norway use:
-    #   rsync://trd.no.rsync.macports.org/release/ports/
-    # A urrent list of mirrors is available at http://trac.macports.org/wiki/Mirrors
+    \# To get the ports tree from the master MacPorts server in California, USA use:
+    \#   rsync://rsync.macports.org/release/ports/
+    \# To get it from the mirror in Trondheim, Norway use:
+    \#   rsync://trd.no.rsync.macports.org/release/ports/
+    \# A urrent list of mirrors is available at http://trac.macports.org/wiki/Mirrors
     file:///Users/foo/github/Portfiles/
     rsync://rsync.macports.org/release/ports/ [default]
 
