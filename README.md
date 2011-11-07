@@ -26,8 +26,8 @@ Usage 使い方
 
 * Portindexファイルを作成する
 
-    cd ~/github/Portfiles
-    portindex
+	cd ~/github/Portfiles
+	portindex
 
 * MacPortsの設定ファイルPortfilesのクローンを登録する
 
