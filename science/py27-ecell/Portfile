@@ -7,7 +7,7 @@ set base_name       "ecell"
 
 name                py27-${base_name}
 version             3.2.3pre1
-revision            0
+revision            1
 categories          science
 maintainers         sfc.keio.ac.jp:ynaito
 license             GPLv2
@@ -20,7 +20,7 @@ Environment version 3, allows many components driven by multiple \
 algorithms with different timescales to coexist.
 conflicts           ecell py26-${base_name}
 
-if {[regexp {^11\.} ${os.version}]} then {
+if {[regexp {^11\.} ${os.version}]} {
     default_variants +python27 -atlas -gcc43 -gcc44 -gcc45
 } 
 
@@ -35,7 +35,11 @@ use_bzip2           yes
 patchfiles          patch-Polymorph.hpp.diff\
                     patch-Makefile.in.diff\
                     patch-setup.py.in.diff\
-                    patch-ga.py.diff
+                    patch-ga.py.diff\
+                    patch-Util.hpp.diff\
+                    patch-PropertySlot.hpp.diff\
+                    patch-ExpressionCompiler.hpp.diff\
+                    patch-ExpressionCompiler.cpp.diff
 
 depends_lib         port:py27-gtk \
                     path:lib/libboost_python.a:boost \
@@ -48,8 +52,18 @@ if {${configure.compiler} == "clang"} {
         configure.compiler llvm-gcc-4.2
 }
 
+if {[variant_isset python27_apple]} {
+    set set_python_arg "python27-apple"
+} else {
+    set set_python_arg "python27"
+}
+
 notes \
-"**********************************************************************
+"**************************************************************************
+To complete the installation and prepare your system for use, please run:
+
+    sudo port select --set python ${set_python_arg}
+
 To use ecell3-session-monitor, please set environment 
 variable PYTHONPATH as following:
 
@@ -60,7 +74,7 @@ Versions/2.7/lib/python2.7/site-packages:/opt/local/lib/python2.7/site-packages\
 For csh, tcsh:
 setenv PYTHONPATH \"/opt/local/Library/Frameworks/Python.framework/\\
 Versions/2.7/lib/python2.7/site-packages:/opt/local/lib/python2.7/site-packages\"
-**********************************************************************"
+**************************************************************************"
 
 
 pre-fetch {
@@ -77,20 +91,33 @@ pre-fetch {
     if {![file exists ${prefix}/lib/libboost_python.a]} {
         if {[file exists ${prefix}/lib/libboost_filesystem.a]} {
             ui_error "Please uninstall or deactivate the boost port and reinstall it by running `port install boost +python27`."
-        }
-        else {
+        } else {
             ui_error "Please install boost with the python27 variant by running `port install boost +python27`."
         }
             error "boost must be installed with the python27 variant enabled."
     }
+
+#    if {[variant_isset python27_apple]} {
+#        system "sudo port select --set python python27-apple"
+#    } else {
+#        system "sudo port select --set python python27"
+#    }
 }
 
 post-destroot {
-	set changearg "-change ${prefix}/Library/Frameworks/Python.framework/Versions/2.7/Python /System/Library/Frameworks/Python.framework/Versions/2.7/Python"
+    if {[variant_isset python27_apple]} {
+        set changearg "-change ${prefix}/Library/Frameworks/Python.framework/Versions/2.7/Python \
+        /System/Library/Frameworks/Python.framework/Versions/2.7/Python"
+    } else {
+        set changearg "-change /System/Library/Frameworks/Python.framework/Versions/2.7/Python \
+        ${prefix}/Library/Frameworks/Python.framework/Versions/2.7/Python"
+    }
 
-	system "install_name_tool ${changearg} ${prefix}/lib/libboost_python.dylib"
-	system "install_name_tool ${changearg} ${prefix}/lib/libboost_python-mt.dylib"
+    system "install_name_tool ${changearg} ${prefix}/lib/libboost_python.dylib"
+    system "install_name_tool ${changearg} ${prefix}/lib/libboost_python-mt.dylib"
 }
+
+variant python27_apple description {Use System's Python} {}
 
 #variant no_x11 {}
 #variant quartz {}

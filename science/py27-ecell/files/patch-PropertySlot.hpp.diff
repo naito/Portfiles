@@ -1,0 +1,28 @@
+--- ./ecell/libecs/PropertySlot.orig.hpp	2011-11-23 16:35:55.000000000 +0900
++++ ./ecell/libecs/PropertySlot.hpp	2011-11-23 19:06:14.000000000 +0900
+@@ -305,8 +305,8 @@
+                                         SetMethodPtr aLoadMethodPtr,
+                                         GetMethodPtr aSaveMethodPtr )
+         : BaseType( aName, aSetMethodPtr, aGetMethodPtr ),
+-          theLoadMethodPtr( SetMethod( aLoadMethodPtr ) ),
+-          theSaveMethodPtr( GetMethod( aSaveMethodPtr ) )
++          theLoadMethodPtr( this->SetMethod( aLoadMethodPtr ) ),
++          theSaveMethodPtr( this->GetMethod( aSaveMethodPtr ) )
+     {
+         ; // do nothing
+     }
+@@ -319,12 +319,12 @@
+ 
+     DM_IF virtual const bool isLoadable() const
+     {
+-        return isSetableMethod( theLoadMethodPtr );
++        return this->isSetableMethod( theLoadMethodPtr );
+     }
+ 
+     DM_IF virtual const bool isSavable()    const
+     {
+-        return isGetableMethod( theSaveMethodPtr );
++        return this->isGetableMethod( theSaveMethodPtr );
+     }
+ 
+     DM_IF virtual void loadPolymorph( T& anObject, libecs::Polymorph const& aValue ) const
