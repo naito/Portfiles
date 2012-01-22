@@ -6,7 +6,7 @@ PortSystem          1.0
 set base_name       "ecell"
 
 name                py26-${base_name}
-version             3.2.3pre1
+version             3.2.3pre2
 revision            0
 categories          science
 maintainers         sfc.keio.ac.jp:ynaito
