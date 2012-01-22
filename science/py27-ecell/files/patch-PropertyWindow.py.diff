@@ -1,0 +1,22 @@
+--- ./ecell/frontend/session-monitor/plugins/PropertyWindow.orig.py	2012-01-21 21:40:02.000000000 +0900
++++ ./ecell/frontend/session-monitor/plugins/PropertyWindow.py	2012-01-22 20:12:02.000000000 +0900
+@@ -637,11 +637,8 @@
+                     return None
+ 
+ 
+-        aFullPNString = createFullPNString(self.theSelectedFullPN)
+-
+         try:
+             self.theSession.setEntityProperty( self.theSelectedFullPN, aValue ) 
+-            lockCursor = self.lockCursor
+             self.lockCursor = True
+             self['theTreeView'].get_selection().select_iter( anIter )
+             self.lockCursor = False
+@@ -666,6 +663,7 @@
+             self.__updatePropertyList()
+             #self.thePluginManager.updateAllPluginWindow() 
+ 
++        self.__updatePropertyList()
+     # end of updateValue
+ 
+ 

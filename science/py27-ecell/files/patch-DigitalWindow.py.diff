@@ -1,0 +1,37 @@
+--- ./ecell/frontend/session-monitor/plugins/DigitalWindow.orig.py	2012-01-21 21:40:02.000000000 +0900
++++ ./ecell/frontend/session-monitor/plugins/DigitalWindow.py	2012-01-22 19:23:34.000000000 +0900
+@@ -53,10 +53,9 @@
+         OsogoPluginWindow.__init__( self, aDirName, aData, \
+                                     aPluginManager, aRoot )
+         
+-        aFullPNString = createFullPNString( self.getFullPN() )
+-        aValue = self.theSession.getEntityProperty( aFullPNString )
++        aValue = self.theSession.getEntityProperty( self.getFullPN() )
+         if not operator.isNumberType( aValue ):
+-            aMessage = "Error: (%s) is not numerical data" %aFullPNString
++            aMessage = "Error: (%s) is not numerical data" % createFullPNString( self.getFullPN() )
+             self.thePluginManager.printMessage( aMessage )
+             aDialog = ConfirmWindow.ConfirmWindow(0,aMessage,'Error!')
+             raise TypeError( aMessage )
+@@ -66,9 +65,8 @@
+     def openWindow(self):
+         OsogoPluginWindow.openWindow(self)
+ 
+-        aFullPNString = createFullPNString( self.getFullPN() )
+-        aValue = self.theSession.getEntityProperty( aFullPNString )
+-        anAttribute = self.theSession.getEntityPropertyAttributes( aFullPNString )
++        aValue = self.theSession.getEntityProperty( self.getFullPN() )
++        anAttribute = self.theSession.getEntityPropertyAttributes( self.getFullPN() )
+ 
+         self.thePluginManager.appendInstance( self )
+ 
+@@ -98,8 +96,7 @@
+     # return -> None
+     # ------------------------------------------------------
+     def update( self ):
+-        aFullPNString = createFullPNString( self.getFullPN() )
+-        aValue = self.theSession.getEntityProperty( aFullPNString )
++        aValue = self.theSession.getEntityProperty( self.getFullPN() )
+         self["value_frame"].set_text( str( aValue ) )
+ 
+     # end of update

@@ -6,7 +6,7 @@ PortSystem          1.0
 set base_name       "ecell"
 
 name                py27-${base_name}
-version             3.2.3pre1
+version             3.2.3pre2
 revision            1
 categories          science
 maintainers         sfc.keio.ac.jp:ynaito
@@ -26,20 +26,21 @@ if {[regexp {^11\.} ${os.version}]} {
 
 master_sites        http://github.com/downloads/ecell/ecell3/
 distname            ${base_name}-${version}
-checksums           md5     0cede77b254595040f533694921cb013 \
-                    sha1    176da828b0916f1e30593b9f2ae5c0c065334f8e \
-                    rmd160  9dfae309dc2ba17398cb4c9549e8ec1c537e9efe
+checksums           md5     4a343bd17e9754e127bb8a7b58cf0d9c \
+                    sha1    fe1cb44b1044b07c9a7084017b03fea4dad51b9a \
+                    rmd160  55153dfb8ddb38a632811ce0bd8a833ef8de66b3
 extract.suffix      .tar.bz2
 use_bzip2           yes
 
-patchfiles          patch-Polymorph.hpp.diff\
-                    patch-Makefile.in.diff\
+patchfiles          patch-Makefile.in.diff\
                     patch-setup.py.in.diff\
-                    patch-ga.py.diff\
                     patch-Util.hpp.diff\
                     patch-PropertySlot.hpp.diff\
                     patch-ExpressionCompiler.hpp.diff\
-                    patch-ExpressionCompiler.cpp.diff
+                    patch-ExpressionCompiler.cpp.diff\
+                    patch-GtkSessionMonitor.py.diff\
+                    patch-DigitalWindow.py.diff\
+                    patch-PropertyWindow.py.diff
 
 depends_lib         port:py27-gtk \
                     path:lib/libboost_python.a:boost \
