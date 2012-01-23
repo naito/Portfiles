@@ -7,7 +7,7 @@ set base_name       "ecell"
 
 name                py27-${base_name}
 version             3.2.3pre2
-revision            1
+revision            2
 categories          science
 maintainers         sfc.keio.ac.jp:ynaito
 license             GPLv2
@@ -40,7 +40,8 @@ patchfiles          patch-Makefile.in.diff\
                     patch-ExpressionCompiler.cpp.diff\
                     patch-GtkSessionMonitor.py.diff\
                     patch-DigitalWindow.py.diff\
-                    patch-PropertyWindow.py.diff
+                    patch-PropertyWindow.py.diff\
+                    patch-FileSelection.py.diff
 
 depends_lib         port:py27-gtk \
                     path:lib/libboost_python.a:boost \
