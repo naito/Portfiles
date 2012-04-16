@@ -41,11 +41,11 @@ if {${subport} != ${name}} {
 
   categories          science
   dist_subdir         ${name}
+  python.add_archflags no
   use_configure       yes
-  universal_variant   no
   build.cmd           make
   build.target        all
-  build.env           none
+#  build.env           none
   destroot.cmd        ${build.cmd}
   destroot.target     install
   destroot.destdir    DESTDIR=${destroot}
@@ -91,6 +91,9 @@ if {${subport} != ${name}} {
   
   pre-fetch {
   
+#      error "\n\n\nbuild.env: ${build.env}\n\n\n"
+
+  
 #      if {![regexp {^11\.} ${os.version}]} then {
 #          error "
 #     ************************************************
@@ -114,6 +117,10 @@ if {${subport} != ${name}} {
   #    } else {
   #        system "sudo port select --set python python27"
   #    }
+  }
+  
+  pre-build {
+#      error "\n\n\nbuild.env: ${build.env}\n\n\n"
   }
   
   post-destroot {
