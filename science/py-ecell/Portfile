@@ -22,9 +22,7 @@ Environment version 3, allows many components driven by multiple \
 algorithms with different timescales to coexist.
 #conflicts           ecell py26-${base_name} py27-${base_name}
 
-if {[regexp {^11\.} ${os.version}]} {
-    default_variants +python${python.version} -atlas -gcc43 -gcc44 -gcc45
-} 
+default_variants +python${python.version} -atlas -gcc43 -gcc44 -gcc45
 
 master_sites        http://github.com/downloads/ecell/ecell3/
 distname            ${base_name}-${version}
