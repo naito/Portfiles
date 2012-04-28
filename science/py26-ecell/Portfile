@@ -9,7 +9,7 @@ set base_name       "ecell"
 
 name                py26-${base_name}
 version             3.2.3pre2
-revision            4
+revision            5
 categories          science
 maintainers         sfc.keio.ac.jp:ynaito
 license             GPLv2
