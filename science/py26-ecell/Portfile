@@ -1,0 +1,145 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; truncate-lines: t; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:et:sw=4:ts=4:sts=4
+# $Id$
+
+PortSystem          1.0
+# PortGroup           python   1.0
+# PortGroup           select   1.0
+
+set base_name       "ecell"
+
+name                py26-${base_name}
+version             3.2.3pre2
+revision            4
+categories          science
+maintainers         sfc.keio.ac.jp:ynaito
+license             GPLv2
+homepage            http://www.e-cell.org/
+description         E-Cell Simulation Environment (E-Cell SE)
+long_description    E-Cell System is an object-oriented software suite \
+for modeling, simulation, and analysis of large scale complex systems \
+such as biological cells. Core part of the system, E-Cell Simulation \
+Environment version 3, allows many components driven by multiple \
+algorithms with different timescales to coexist.
+conflicts           ecell py27-${base_name}
+
+default_variants +python26 -atlas -gcc43 -gcc44 -gcc45
+
+master_sites        http://github.com/downloads/ecell/ecell3/
+distname            ${base_name}-${version}
+checksums           md5     4a343bd17e9754e127bb8a7b58cf0d9c \
+                    sha1    fe1cb44b1044b07c9a7084017b03fea4dad51b9a \
+                    rmd160  55153dfb8ddb38a632811ce0bd8a833ef8de66b3
+extract.suffix      .tar.bz2
+use_bzip2           yes
+
+# python.versions     26 27 
+# python.default_version 27
+
+# if {${subport} != ${name}} {
+
+#  categories          science
+#  dist_subdir         ${name}
+#  python.add_archflags no
+#  use_configure       yes
+#  build.cmd           make
+#  build.target        all
+##  build.env           none
+#  destroot.cmd        ${build.cmd}
+#  destroot.target     install
+#  destroot.destdir    DESTDIR=${destroot}
+#  pre-destroot        {}
+
+  patchfiles          patch-Makefile.in.diff\
+                      patch-setup.py.in.diff\
+                      patch-Util.hpp.diff\
+                      patch-PropertySlot.hpp.diff\
+                      patch-ExpressionCompiler.hpp.diff\
+                      patch-ExpressionCompiler.cpp.diff\
+                      patch-GtkSessionMonitor.py.diff\
+                      patch-DigitalWindow.py.diff\
+                      patch-PropertyWindow.py.diff\
+                      patch-FileSelection.py.diff
+  
+  depends_lib         port:py26-gtk \
+                      path:lib/libboost_python.a:boost \
+                      port:gsl \
+                      port:py26-ply
+  
+  configure.env-append PYTHONPATH="${prefix}/Library/Frameworks/Python.framework/Versions/2.6/lib/python2.6/site-packages:${prefix}/lib/python2.6/site-packages"
+  
+  if {${configure.compiler} == "clang"} {
+          configure.compiler llvm-gcc-4.2
+  }
+  
+  
+  notes \
+  "**************************************************************************
+  To use ecell3-session-monitor, please set environment 
+  variable PYTHONPATH as following:
+  
+  For sh, bash:
+  export PYTHONPATH=\"${prefix}/Library/Frameworks/Python.framework/\\
+  Versions/2.6/lib/python2.6/site-packages:${prefix}/lib/python2.6/site-packages\"
+  
+  For csh, tcsh:
+  setenv PYTHONPATH \"${prefix}/Library/Frameworks/Python.framework/\\
+  Versions/2.6/lib/python2.6/site-packages:${prefix}/lib/python2.6/site-packages\"
+  **************************************************************************"
+  
+  
+  pre-fetch {
+  
+#      error "\n\n\nbuild.env: ${build.env}\n\n\n"
+
+  
+#      if {![regexp {^11\.} ${os.version}]} then {
+#          error "
+#     ************************************************
+#      py27-${base_name} is a package for OS X Lion (10.7).
+#      For Mac OS X Snow Leopard (10.6) or earlier, 
+#      please install py26-${base_name}.
+#     ************************************************"
+#      } 
+  
+      if {![file exists ${prefix}/lib/libboost_python.a]} {
+          if {[file exists ${prefix}/lib/libboost_filesystem.a]} {
+              ui_error "Please uninstall or deactivate the boost port and reinstall it by running `port install boost +python26`."
+          } else {
+              ui_error "Please install boost with the python26 variant by running `port install boost +python26`."
+          }
+              error "boost must be installed with the python26 variant enabled."
+      }
+  
+  #    if {[variant_isset python26_apple]} {
+  #        system "sudo port select --set python python26-apple"
+  #    } else {
+  #        system "sudo port select --set python python26"
+  #    }
+  }
+  
+  pre-build {
+#      error "\n\n\nbuild.env: ${build.env}\n\n\n"
+  }
+  
+  post-destroot {
+  #    if {[variant_isset python26_apple]} {
+  #        set changearg "-change ${prefix}/Library/Frameworks/Python.framework/Versions/2.6/Python \
+  #        /System/Library/Frameworks/Python.framework/Versions/2.6/Python"
+  #    } else {
+  #        set changearg "-change /System/Library/Frameworks/Python.framework/Versions/2.6/Python \
+  #        ${prefix}/Library/Frameworks/Python.framework/Versions/2.6/Python"
+  #    }
+  
+      set changearg "-change ${prefix}/Library/Frameworks/Python.framework/Versions/2.6/Python \
+      /System/Library/Frameworks/Python.framework/Versions/2.6/Python"
+  
+      system "install_name_tool ${changearg} ${prefix}/lib/libboost_python.dylib"
+      system "install_name_tool ${changearg} ${prefix}/lib/libboost_python-mt.dylib"
+  }
+  
+  #variant no_x11 {}
+  #variant quartz {}
+  
+  #variant ja {}
+
+# }
