@@ -65,7 +65,10 @@ use_bzip2           yes
                       port:gsl \
                       port:py26-ply
   
-  configure.env-append PYTHONPATH="${prefix}/Library/Frameworks/Python.framework/Versions/2.6/lib/python2.6/site-packages:${prefix}/lib/python2.6/site-packages"
+  set env_pythonpath  "PYTHONPATH=\"${prefix}/Library/Frameworks/Python.framework/Versions/2.6/lib/python2.6/site-packages:${prefix}/lib/python2.6/site-packages\""
+
+  configure.env-append ${env_pythonpath}
+  build.env-append     ${env_pythonpath}
   
   if {${configure.compiler} == "clang"} {
           configure.compiler llvm-gcc-4.2
