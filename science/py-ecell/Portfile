@@ -2,14 +2,13 @@
 # $Id$
 
 PortSystem          1.0
-# PortGroup           python   1.0
-# PortGroup           select   1.0
+PortGroup           python   1.0
 
 set base_name       "ecell"
 
-name                py27-${base_name}
+name                py-${base_name}
 version             3.2.3pre2
-revision            5
+revision            6
 categories          science
 maintainers         sfc.keio.ac.jp:ynaito
 license             GPLv2
@@ -20,9 +19,9 @@ for modeling, simulation, and analysis of large scale complex systems \
 such as biological cells. Core part of the system, E-Cell Simulation \
 Environment version 3, allows many components driven by multiple \
 algorithms with different timescales to coexist.
-conflicts           ecell py26-${base_name}
+#conflicts           ecell py26-${base_name} py27-${base_name}
 
-default_variants +python27 -atlas -gcc43 -gcc44 -gcc45
+default_variants +python${python.version} -atlas -gcc43 -gcc44 -gcc45
 
 master_sites        http://github.com/downloads/ecell/ecell3/
 distname            ${base_name}-${version}
@@ -32,25 +31,23 @@ checksums           md5     4a343bd17e9754e127bb8a7b58cf0d9c \
 extract.suffix      .tar.bz2
 use_bzip2           yes
 
-# python.versions     26 27 
-# python.default_version 27
+python.versions     26 27 
+python.default_version 27
 
-# if {${subport} != ${name}} {
+if {${subport} != ${name}} {
 
-#  categories          science
-#  dist_subdir         ${name}
-#  python.add_archflags no
-#  use_configure       yes
-#  build.cmd           make
-#  build.target        all
-##  build.env           none
-#  destroot.cmd        ${build.cmd}
-#  destroot.target     install
-#  destroot.destdir    DESTDIR=${destroot}
-#  pre-destroot        {}
+  categories          science
+  dist_subdir         ${name}
+  python.add_archflags no
+  use_configure       yes
+  build.cmd           make
+  build.target        all
+  destroot.cmd        ${build.cmd}
+  destroot.target     install
+  destroot.destdir    DESTDIR=${destroot}
+  pre-destroot        {}
 
   patchfiles          patch-Makefile.in.diff\
-                      patch-setup.py.in.diff\
                       patch-Util.hpp.diff\
                       patch-PropertySlot.hpp.diff\
                       patch-ExpressionCompiler.hpp.diff\
@@ -58,14 +55,18 @@ use_bzip2           yes
                       patch-GtkSessionMonitor.py.diff\
                       patch-DigitalWindow.py.diff\
                       patch-PropertyWindow.py.diff\
+                      patch-pyecell_setup.py.in.diff\
                       patch-FileSelection.py.diff
   
-  depends_lib         port:py27-gtk \
+  depends_lib         port:py${python.version}-gtk \
                       path:lib/libboost_python.a:boost \
                       port:gsl \
-                      port:py27-ply
+                      port:py${python.version}-ply
   
-  configure.env-append PYTHONPATH="${prefix}/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages:${prefix}/lib/python2.7/site-packages"
+  set env_ARCHFLAGS   "ARCHFLAGS=\"-arch ${build_arch}\""
+  set env_PYTHONPATH  "PYTHONPATH=\"${prefix}/Library/Frameworks/Python.framework/Versions/${python.branch}/lib/python${python.branch}/site-packages:${prefix}/lib/python${python.branch}/site-packages\""
+  configure.env-append ${env_PYTHONPATH}
+  build.env-append     "${env_ARCHFLAGS} ${env_PYTHONPATH}"
   
   if {${configure.compiler} == "clang"} {
           configure.compiler llvm-gcc-4.2
@@ -79,11 +80,11 @@ use_bzip2           yes
   
   For sh, bash:
   export PYTHONPATH=\"${prefix}/Library/Frameworks/Python.framework/\\
-  Versions/2.7/lib/python2.7/site-packages:${prefix}/lib/python2.7/site-packages\"
+  Versions/${python.branch}/lib/python${python.branch}/site-packages:${prefix}/lib/python${python.branch}/site-packages\"
   
   For csh, tcsh:
   setenv PYTHONPATH \"${prefix}/Library/Frameworks/Python.framework/\\
-  Versions/2.7/lib/python2.7/site-packages:${prefix}/lib/python2.7/site-packages\"
+  Versions/${python.branch}/lib/python${python.branch}/site-packages:${prefix}/lib/python${python.branch}/site-packages\"
   **************************************************************************"
   
   
@@ -103,11 +104,11 @@ use_bzip2           yes
   
       if {![file exists ${prefix}/lib/libboost_python.a]} {
           if {[file exists ${prefix}/lib/libboost_filesystem.a]} {
-              ui_error "Please uninstall or deactivate the boost port and reinstall it by running `port install boost +python27`."
+              ui_error "Please uninstall or deactivate the boost port and reinstall it by running `port install boost +python${python.version}`."
           } else {
-              ui_error "Please install boost with the python27 variant by running `port install boost +python27`."
+              ui_error "Please install boost with the python${python.version} variant by running `port install boost +python${python.version}`."
           }
-              error "boost must be installed with the python27 variant enabled."
+              error "boost must be installed with the python${python.version} variant enabled."
       }
   
   #    if {[variant_isset python27_apple]} {
@@ -123,15 +124,15 @@ use_bzip2           yes
   
   post-destroot {
   #    if {[variant_isset python27_apple]} {
-  #        set changearg "-change ${prefix}/Library/Frameworks/Python.framework/Versions/2.7/Python \
-  #        /System/Library/Frameworks/Python.framework/Versions/2.7/Python"
+  #        set changearg "-change ${prefix}/Library/Frameworks/Python.framework/Versions/${python.branch}/Python \
+  #        /System/Library/Frameworks/Python.framework/Versions/${python.branch}/Python"
   #    } else {
-  #        set changearg "-change /System/Library/Frameworks/Python.framework/Versions/2.7/Python \
-  #        ${prefix}/Library/Frameworks/Python.framework/Versions/2.7/Python"
+  #        set changearg "-change /System/Library/Frameworks/Python.framework/Versions/${python.branch}/Python \
+  #        ${prefix}/Library/Frameworks/Python.framework/Versions/${python.branch}/Python"
   #    }
   
-      set changearg "-change ${prefix}/Library/Frameworks/Python.framework/Versions/2.7/Python \
-      /System/Library/Frameworks/Python.framework/Versions/2.7/Python"
+      set changearg "-change ${prefix}/Library/Frameworks/Python.framework/Versions/${python.branch}/Python \
+      /System/Library/Frameworks/Python.framework/Versions/${python.branch}/Python"
   
       system "install_name_tool ${changearg} ${prefix}/lib/libboost_python.dylib"
       system "install_name_tool ${changearg} ${prefix}/lib/libboost_python-mt.dylib"
@@ -142,4 +143,4 @@ use_bzip2           yes
   
   #variant ja {}
 
-# }
+}
