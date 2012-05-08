@@ -1,11 +1,13 @@
-py27-ecells
+py-ecells
 ===========
 
-* E-Cell3 for OS X 10.7.
-
-* At present, this port uses Python 2.7 of OS X (can not use MacPorts' Python).
+* Includes py26-ecell and py27-ecell.
 
 Install
 -------
 
-    sudo port install py27-ecell
+* E-Cell 3 for Python 2.6, Mac OS X 10.6 or earlier
+        sudo port install py26-ecell +python26
+
+* E-Cell 3 for Python 2.7, OS X 10.7
+        sudo port install py27-ecell +python27

@@ -4,17 +4,15 @@ Local Portfiles for MacPorts
 Contents 内容
 ------------
 
-### py26-ecell
+### py-ecell
+
+* Port Group Python を利用して、ひとつのパッケージに Python 2.6 用（py26-ecell）、Python 2.7 用（py27-ecell）をまとめてあります。
 
 * science/py26-ecell
-
-* E-Cell3 for Mac OS X 10.6 or earlier.
-
-### py27-ecell
+** E-Cell3 for Mac OS X 10.6 or earlier.
 
 * science/py27-ecell
-
-* E-Cell3 for OS X 10.7.
+** E-Cell3 for OS X 10.7.
 
 
 Usage 使い方
@@ -53,11 +51,11 @@ Usage 使い方
 
 * E-Cell3 for Mac OS X 10.6 or earlier.
 
-        sudo port install py26-ecell
+        sudo port install py26-ecell +python26
 
 * E-Cell3 for Mac OS X 10.7
 
-        sudo port install py27-ecell
+        sudo port install py27-ecell +python27
 
 ### ポートの更新
 
