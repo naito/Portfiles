@@ -59,6 +59,7 @@ if {${subport} != ${name}} {
                       patch-FileSelection.py.diff
   
   depends_lib         port:py${python.version}-gtk \
+                      port:py${python.version}-numpy \
                       path:lib/libboost_python.a:boost \
                       port:gsl \
                       port:py${python.version}-ply
@@ -131,8 +132,11 @@ if {${subport} != ${name}} {
   #        ${prefix}/Library/Frameworks/Python.framework/Versions/${python.branch}/Python"
   #    }
   
-      set changearg "-change ${prefix}/Library/Frameworks/Python.framework/Versions/${python.branch}/Python \
-      /System/Library/Frameworks/Python.framework/Versions/${python.branch}/Python"
+#      set changearg "-change ${prefix}/Library/Frameworks/Python.framework/Versions/${python.branch}/Python \
+#      /System/Library/Frameworks/Python.framework/Versions/${python.branch}/Python"
+  
+      set changearg "-change /System/Library/Frameworks/Python.framework/Versions/${python.branch}/Python \
+      ${prefix}/Library/Frameworks/Python.framework/Versions/${python.branch}/Python"
   
       system "install_name_tool ${changearg} ${prefix}/lib/libboost_python.dylib"
       system "install_name_tool ${changearg} ${prefix}/lib/libboost_python-mt.dylib"
