@@ -69,17 +69,17 @@ if {${subport} != ${name}} {
   configure.env-append ${env_PYTHONPATH}
   build.env-append     "${env_ARCHFLAGS} ${env_PYTHONPATH}"
   
-#  if {${configure.compiler} == "clang"} {
-#          configure.compiler llvm-gcc-4.2
-#  }
-
-  if {${configure.compiler} == "clang" || ${configure.compiler} == "llvm-gcc-4.2"} { 
-      configure.compiler gcc-4.2 
-      if {![file executable ${configure.cc}]} { 
-          depends_build-append port:apple-gcc42 
-          configure.compiler apple-gcc-4.2 
-      }
+  if {${configure.compiler} == "clang"} {
+          configure.compiler llvm-gcc-4.2
   }
+
+#  if {${configure.compiler} == "clang" || ${configure.compiler} == "llvm-gcc-4.2"} { 
+#      configure.compiler gcc-4.2 
+#      if {![file executable ${configure.cc}]} { 
+#          depends_build-append port:apple-gcc42 
+#          configure.compiler apple-gcc-4.2 
+#      }
+#  }
   
   notes \
   "**************************************************************************
@@ -139,11 +139,11 @@ if {${subport} != ${name}} {
   #        ${prefix}/Library/Frameworks/Python.framework/Versions/${python.branch}/Python"
   #    }
   
-#      set changearg "-change ${prefix}/Library/Frameworks/Python.framework/Versions/${python.branch}/Python \
-#      /System/Library/Frameworks/Python.framework/Versions/${python.branch}/Python"
+      set changearg "-change ${prefix}/Library/Frameworks/Python.framework/Versions/${python.branch}/Python \
+      /System/Library/Frameworks/Python.framework/Versions/${python.branch}/Python"
   
-      set changearg "-change /System/Library/Frameworks/Python.framework/Versions/${python.branch}/Python \
-      ${prefix}/Library/Frameworks/Python.framework/Versions/${python.branch}/Python"
+#      set changearg "-change /System/Library/Frameworks/Python.framework/Versions/${python.branch}/Python \
+#      ${prefix}/Library/Frameworks/Python.framework/Versions/${python.branch}/Python"
   
       system "install_name_tool ${changearg} ${prefix}/lib/libboost_python.dylib"
       system "install_name_tool ${changearg} ${prefix}/lib/libboost_python-mt.dylib"
