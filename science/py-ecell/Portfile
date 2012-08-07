@@ -8,7 +8,7 @@ set base_name       "ecell"
 
 name                py-${base_name}
 version             3.2.3pre2
-revision            7
+revision            8
 categories          science
 maintainers         sfc.keio.ac.jp:ynaito
 license             GPLv2
@@ -36,34 +36,34 @@ python.default_version 27
 
 if {${subport} != ${name}} {
 
-  categories          science
-  dist_subdir         ${name}
+  categories           science
+  dist_subdir          ${name}
   python.add_archflags no
-  use_configure       yes
-  build.cmd           make
-  build.target        all
-  destroot.cmd        ${build.cmd}
-  destroot.target     install
-  destroot.destdir    DESTDIR=${destroot}
-  pre-destroot        {}
-  extract.asroot      yes
+  use_configure        yes
+  build.cmd            make
+  build.target         all
+  destroot.cmd         ${build.cmd}
+  destroot.target      install
+  destroot.destdir     DESTDIR=${destroot}
+  pre-destroot         {}
+  extract.asroot       yes
 
-  patchfiles          patch-Makefile.in.diff\
-                      patch-Util.hpp.diff\
-                      patch-PropertySlot.hpp.diff\
-                      patch-ExpressionCompiler.hpp.diff\
-                      patch-ExpressionCompiler.cpp.diff\
-                      patch-GtkSessionMonitor.py.diff\
-                      patch-DigitalWindow.py.diff\
-                      patch-PropertyWindow.py.diff\
-                      patch-pyecell_setup.py.in.diff\
-                      patch-FileSelection.py.diff
+  patchfiles           patch-Makefile.in.diff\
+                       patch-Util.hpp.diff\
+                       patch-PropertySlot.hpp.diff\
+                       patch-ExpressionCompiler.hpp.diff\
+                       patch-ExpressionCompiler.cpp.diff\
+                       patch-GtkSessionMonitor.py.diff\
+                       patch-DigitalWindow.py.diff\
+                       patch-PropertyWindow.py.diff\
+                       patch-pyecell_setup.py.in.diff\
+                       patch-FileSelection.py.diff
   
-  depends_lib         port:py${python.version}-gtk \
-                      port:py${python.version}-numpy \
-                      path:lib/libboost_python-mt.a:boost \
-                      port:gsl \
-                      port:py${python.version}-ply
+  depends_lib          port:py${python.version}-gtk \
+                       port:py${python.version}-numpy \
+                       path:lib/libboost_python-mt.a:boost \
+                       port:gsl \
+                       port:py${python.version}-ply
   
   set env_ARCHFLAGS   "ARCHFLAGS=\"-arch ${build_arch}\""
   set env_PYTHONPATH  "PYTHONPATH=\"${prefix}/Library/Frameworks/Python.framework/Versions/${python.branch}/lib/python${python.branch}/site-packages:${prefix}/lib/python${python.branch}/site-packages\""
@@ -115,12 +115,7 @@ if {${subport} != ${name}} {
       if {![file exists ${prefix}/lib/libboost_python.dylib] && [file exists ${prefix}/lib/libboost_python-mt.dylib]} {
           ln -s ${prefix}/lib/libboost_python-mt.dylib ${prefix}/lib/libboost_python.dylib
       }
-  }
   
-  pre-build {
-  }
-  
-  post-destroot {
   #    if {[variant_isset python27_apple]} {
   #        set changearg "-change ${prefix}/Library/Frameworks/Python.framework/Versions/${python.branch}/Python \
   #        /System/Library/Frameworks/Python.framework/Versions/${python.branch}/Python"
@@ -129,14 +124,23 @@ if {${subport} != ${name}} {
   #        ${prefix}/Library/Frameworks/Python.framework/Versions/${python.branch}/Python"
   #    }
   
-      set changearg "-change ${prefix}/Library/Frameworks/Python.framework/Versions/${python.branch}/Python \
-      /System/Library/Frameworks/Python.framework/Versions/${python.branch}/Python"
+# for python-apple
+#      set changearg "-change ${prefix}/Library/Frameworks/Python.framework/Versions/${python.branch}/Python \
+#      /System/Library/Frameworks/Python.framework/Versions/${python.branch}/Python"
   
-#      set changearg "-change /System/Library/Frameworks/Python.framework/Versions/${python.branch}/Python \
-#      ${prefix}/Library/Frameworks/Python.framework/Versions/${python.branch}/Python"
+# for python
+      set changearg "-change /System/Library/Frameworks/Python.framework/Versions/${python.branch}/Python \
+      ${prefix}/Library/Frameworks/Python.framework/Versions/${python.branch}/Python"
   
       system "install_name_tool ${changearg} ${prefix}/lib/libboost_python.dylib"
       system "install_name_tool ${changearg} ${prefix}/lib/libboost_python-mt.dylib"
+  
+  }
+  
+  pre-build {
+  }
+  
+  post-destroot {
   }
   
   #variant no_x11 {}
