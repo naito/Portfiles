@@ -8,7 +8,7 @@ set base_name       "ecell"
 
 name                py-${base_name}
 version             3.2.3pre2
-revision            8
+revision            9
 categories          science
 maintainers         sfc.keio.ac.jp:ynaito
 license             GPLv2
@@ -57,7 +57,8 @@ if {${subport} != ${name}} {
                        patch-DigitalWindow.py.diff\
                        patch-PropertyWindow.py.diff\
                        patch-pyecell_setup.py.in.diff\
-                       patch-FileSelection.py.diff
+                       patch-FileSelection.py.diff\
+                       patch-_ecs.cpp.diff
   
   depends_lib          port:py${python.version}-gtk \
                        port:py${python.version}-numpy \

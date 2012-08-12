@@ -1,0 +1,10 @@
+--- ./ecell/pyecell/ecell/_ecs.cpp.orig	2012-01-21 21:40:02.000000000 +0900
++++ ./ecell/pyecell/ecell/_ecs.cpp	2012-08-12 15:49:13.000000000 +0900
+@@ -2987,6 +2987,7 @@
+         .add_property( "ID", &Entity::getID, &Entity::setID )
+         .add_property( "FullID", &Entity::getFullID )
+         .add_property( "Name", &Entity::getName, &Entity::setName )
++        .def( "getSuperSystem", &Entity::getSuperSystem, return_existing_object() )
+         .def( "__setattr__", &EcsObject___setattr__< Entity > )
+         .def( "__getattr__", &EcsObject___getattr__< Entity > )
+         ;
