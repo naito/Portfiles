@@ -1,0 +1,253 @@
+--- ./doc/samples/Drosophila/Drosophila-python.em.orig	2011-12-16 14:09:52.000000000 +0900
++++ ./doc/samples/Drosophila/Drosophila-python.em	2012-08-13 22:41:54.000000000 +0900
+@@ -4,7 +4,7 @@
+ 
+ @{
+ VOLUME = 1e-18
+-N_A = 6.02e+23
++N_A = 6.0221367e+23
+ }
+ 
+ Stepper ODEStepper( DE )
+@@ -28,9 +28,9 @@
+ 	StepperID	DE;
+ 	
+ 	Variable Variable( SIZE ) 
+-        {	
+-                Value   @(VOLUME);
+-        }
++	{	
++		Value   @(VOLUME);
++	}
+ 
+ 	Variable Variable( M )
+ 	{
+@@ -59,92 +59,187 @@
+ 	
+ 	Process PythonProcess( R_toy1 )
+ 	{
+-		IsContinuous	1;
+-		InitializeMethod "vs = 0.76; KI = 1;";
+-		FireMethod "self.Flux = ( (vs*KI) / (KI + (C0.variable.MolarConc * C0.variable.MolarConc * C0.variable.MolarConc) ) * self.superSystem.SizeN_A )";
+-
+-		VariableReferenceList	[ P0 Variable:.:M 1 ] [ C0 Variable:.:Pn ];
++		IsContinuous  1;
++		VariableReferenceList
++			[ P0 Variable:.:M  1 ]
++			[ C0 Variable:.:Pn 0 ];
++
++		InitializeMethod  '''
++vs  = 0.76
++KI  = 1.0
++vC0 = C0.variable
++''';
++
++		FireMethod  '''
++CC0 = vC0.MolarConc
++self.Flux = ( vs * KI ) / ( KI + ( CC0 * CC0 * CC0 )) * self.superSystem.SizeN_A
++''';
+ 	}
+ 	
+ 	Process PythonProcess( R_toy2 )
+ 	{
+-		IsContinuous	1;
+-		InitializeMethod "vm = 0.65; Km = 0.5;";
+-		FireMethod "self.Flux = ( (vm * S0.variable.MolarConc) / ( Km + S0.variable.MolarConc) * self.superSystem.SizeN_A )";
++		IsContinuous  1;
++		VariableReferenceList
++			[ S0 Variable:.:M -1 ];
++
++		InitializeMethod '''
++vm = 0.65
++Km = 0.5
++vS0 = S0.variable
++''';
++
++		FireMethod '''
++self.Flux = ( vm * vS0.Value ) / ( Km + vS0.MolarConc )
++''';
+ 
+-		VariableReferenceList	[ S0 Variable:.:M -1 ];
+ 	}
+ 	
+ 	Process PythonProcess( R_toy3 )
+ 	{
+-		IsContinuous	1;
+-		InitializeMethod "Ks = 0.38;";
+-		FireMethod "self.Flux = ( (Ks * C0.variable.MolarConc) * self.superSystem.SizeN_A )";
++		IsContinuous  1;
++		VariableReferenceList
++			[ P0 Variable:.:P0 1 ]
++			[ C0 Variable:.:M  0 ];
++
++		InitializeMethod '''
++Ks  = 0.38
++vC0 = C0.variable
++''';
++
++		FireMethod '''
++self.Flux = Ks * vC0.Value
++''';
+ 
+-		VariableReferenceList	[ P0 Variable:.:P0 1 ] [ C0 Variable:.:M 0 ];
+ 	}
+ 	
+ 	Process PythonProcess( R_toy4 )
+ 	{
+-		IsContinuous	1;
+-		InitializeMethod "V1 = 3.2; K1 = 2;";
+-		FireMethod "self.Flux = ( ( V1 * S0.variable.MolarConc) / (K1 + S0.variable.MolarConc) * self.superSystem.SizeN_A )";
++		IsContinuous  1;
++		VariableReferenceList
++			[ P0 Variable:.:P1  1 ]
++			[ S0 Variable:.:P0 -1 ];
++
++		InitializeMethod '''
++V1 = 3.2
++K1 = 2.0
++vS0 = S0.variable
++''';
++
++		FireMethod '''
++self.Flux = ( V1 * vS0.Value ) / ( K1 + vS0.MolarConc )
++''';
+ 
+-		VariableReferenceList	[ P0 Variable:.:P1 1 ] [ S0 Variable:.:P0 -1 ];
+ 	}
+ 	
+ 	Process PythonProcess( R_toy5 )
+ 	{
+-		IsContinuous	1;
+-		InitializeMethod "V2 = 1.58; K2 = 2;";
+-		FireMethod "self.Flux = ( (V2 * S0.variable.MolarConc) / (K2 + S0.variable.MolarConc) * self.superSystem.SizeN_A )";
++		IsContinuous  1;
++		VariableReferenceList
++			[ P0 Variable:.:P0  1 ]
++			[ S0 Variable:.:P1 -1 ];
++
++		InitializeMethod '''
++V2 = 1.58
++K2 = 2.0
++vS0 = S0.variable
++''';
++
++		FireMethod '''
++self.Flux = ( V2 * vS0.Value ) / ( K2 + vS0.MolarConc )
++''';
+ 
+-		VariableReferenceList	[ P0 Variable:.:P0 1 ] [ S0 Variable:.:P1 -1 ];
+ 	}
+ 	
+ 	Process PythonProcess( R_toy6 )
+ 	{
+-		IsContinuous	1;
+-		InitializeMethod "V3 = 5; K3 = 2;";
+-		FireMethod "self.Flux = ( ( V3 * S0.variable.MolarConc) / (K3 + S0.variable.MolarConc) * self.superSystem.SizeN_A )";
++		IsContinuous  1;
++		VariableReferenceList
++			[ P0 Variable:.:P2  1 ]
++			[ S0 Variable:.:P1 -1];
++
++		InitializeMethod '''
++V3 = 5.0
++K3 = 2.0
++vS0 = S0.variable
++''';
++
++		FireMethod '''
++self.Flux = ( V3 * vS0.Value ) / ( K3 + vS0.MolarConc )
++''';
+ 
+-		VariableReferenceList	[ P0 Variable:.:P2 1 ] [ S0 Variable:.:P1 -1];
+ 	}
+ 	
+ 	Process PythonProcess( R_toy7 )
+ 	{
+-		IsContinuous	1;
+-		InitializeMethod "V4 = 2.5; K4 = 2;";
+-		FireMethod "self.Flux = ( (V4 * S0.variable.MolarConc) / (K4 + S0.variable.MolarConc) * self.superSystem.SizeN_A )";
++		IsContinuous  1;
++		VariableReferenceList
++			[ P0 Variable:.:P1  1 ]
++			[ S0 Variable:.:P2 -1 ];
++
++		InitializeMethod '''
++V4 = 2.5
++K4 = 2.0
++vS0 = S0.variable
++''';
++
++		FireMethod '''
++self.Flux = ( V4 * vS0.Value ) / ( K4 + vS0.MolarConc )
++''';
+ 
+-		VariableReferenceList	[ P0 Variable:.:P1 1 ] [ S0 Variable:.:P2 -1 ];
+ 	}
+ 			
+ 	Process PythonProcess( R_toy8 )
+ 	{
+-		IsContinuous	1;
+-		InitializeMethod "k1 = 1.9;";
+-		FireMethod "self.Flux = ( ( k1 * S0.variable.MolarConc) * self.superSystem.SizeN_A )";
++		IsContinuous  1;
++		VariableReferenceList
++			[ P0 Variable:.:Pn  1 ]
++			[ S0 Variable:.:P2 -1 ];
++
++		InitializeMethod '''
++k1 = 1.9
++vS0 = S0.variable
++''';
++
++		FireMethod '''
++self.Flux = k1 * vS0.Value
++''';
+ 
+-		VariableReferenceList	[ P0 Variable:.:Pn 1 ] [ S0 Variable:.:P2 -1 ];
+ 	}
+ 	
+ 	Process PythonProcess( R_toy9 )
+ 	{
+-		IsContinuous	1;
+-		InitializeMethod "k2 = 1.3;";
+-		FireMethod "self.Flux = ( (k2 * S0.variable.MolarConc) * self.superSystem.SizeN_A )";
++		IsContinuous  1;
++		VariableReferenceList
++			[ P0 Variable:.:P2  1 ]
++			[ S0 Variable:.:Pn -1 ];
++
++		InitializeMethod '''
++k2 = 1.3
++vS0 = S0.variable
++''';
++
++		FireMethod '''
++self.Flux = k2 * vS0.Value
++''';
+ 
+-		VariableReferenceList	[ P0 Variable:.:P2 1 ] [ S0 Variable:.:Pn -1 ];
+ 	}
+ 	
+ 	Process PythonProcess( R_toy10 )
+ 	{
+-		IsContinuous	1;
+-		InitializeMethod "vd = 0.95; Kd = 0.2;";
+-		FireMethod "self.Flux = ( ( vd * S0.variable.MolarConc) / (Kd + S0.variable.MolarConc) * self.superSystem.SizeN_A )";
++		IsContinuous  1;
++		VariableReferenceList
++			[ S0 Variable:.:P2 -1 ];
++
++		InitializeMethod '''
++vd = 0.95
++Kd = 0.2
++vS0 = S0.variable
++''';
++
++		FireMethod '''
++self.Flux = ( vd * vS0.Value) / ( Kd + vS0.MolarConc )
++''';
+ 
+-		VariableReferenceList	[ S0 Variable:.:P2 -1 ];
+ 	}	
+ 	
+ }

@@ -58,7 +58,8 @@ if {${subport} != ${name}} {
                        patch-PropertyWindow.py.diff\
                        patch-pyecell_setup.py.in.diff\
                        patch-FileSelection.py.diff\
-                       patch-_ecs.cpp.diff
+                       patch-_ecs.cpp.diff\
+                       patch-Drosophila-python.em.diff
   
   depends_lib          port:py${python.version}-gtk \
                        port:py${python.version}-numpy \
