@@ -1,5 +1,56 @@
 --- ./ecell/pyecell/ecell/_ecs.cpp.orig	2012-01-21 21:40:02.000000000 +0900
-+++ ./ecell/pyecell/ecell/_ecs.cpp	2012-08-12 15:49:13.000000000 +0900
++++ ./ecell/pyecell/ecell/_ecs.cpp	2012-08-13 21:31:44.000000000 +0900
+@@ -1627,10 +1627,10 @@
+     mutable String thePrivPrefix;
+ };
+ 
+-class PythonProcess: public PythonEntityBase< PythonProcess, Process >
++class PythonProcess__in_ecs_cpp__: public PythonEntityBase< PythonProcess__in_ecs_cpp__, Process >
+ {
+ public:
+-    virtual ~PythonProcess() {}
++    virtual ~PythonProcess__in_ecs_cpp__() {}
+ 
+     LIBECS_DM_INIT_PROP_INTERFACE()
+     {
+@@ -1673,8 +1673,8 @@
+         return py::extract< bool >( anIsContinuousDescr.get() );
+     }
+ 
+-    PythonProcess( PythonDynamicModule< PythonProcess > const& aModule )
+-        : PythonEntityBase< PythonProcess, Process >( aModule ) {}
++    PythonProcess__in_ecs_cpp__( PythonDynamicModule< PythonProcess__in_ecs_cpp__ > const& aModule )
++        : PythonEntityBase< PythonProcess__in_ecs_cpp__, Process >( aModule ) {}
+ 
+     py::object theFireMethod;
+ };
+@@ -1763,7 +1763,7 @@
+ };
+ 
+ template<>
+-EntityType DeduceEntityType< PythonProcess >::value( EntityType::PROCESS );
++EntityType DeduceEntityType< PythonProcess__in_ecs_cpp__ >::value( EntityType::PROCESS );
+ 
+ template<>
+ EntityType DeduceEntityType< PythonVariable >::value( EntityType::VARIABLE );
+@@ -2533,7 +2533,7 @@
+         switch ( aDMType.getType() )
+         {
+         case EntityType::PROCESS:
+-            aModule = new PythonDynamicModule< PythonProcess >( obj );
++            aModule = new PythonDynamicModule< PythonProcess__in_ecs_cpp__ >( obj );
+             break;
+ 
+         case EntityType::VARIABLE:
+@@ -2846,7 +2846,7 @@
+     py::register_exception_translator< std::exception >( &translateException );
+     py::register_exception_translator< std::range_error >( &translateRangeError );
+     PythonVariable::addToRegistry();
+-    PythonProcess::addToRegistry();
++    PythonProcess__in_ecs_cpp__::addToRegistry();
+     PythonSystem::addToRegistry();
+ 
+     py::def( "getLibECSVersionInfo", &getLibECSVersionInfo );
 @@ -2987,6 +2987,7 @@
          .add_property( "ID", &Entity::getID, &Entity::setID )
          .add_property( "FullID", &Entity::getFullID )

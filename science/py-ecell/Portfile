@@ -8,7 +8,7 @@ set base_name       "ecell"
 
 name                py-${base_name}
 version             3.2.3pre2
-revision            9
+revision            10
 categories          science
 maintainers         sfc.keio.ac.jp:ynaito
 license             GPLv2
@@ -21,7 +21,7 @@ Environment version 3, allows many components driven by multiple \
 algorithms with different timescales to coexist.
 #conflicts           ecell py26-${base_name} py27-${base_name}
 
-default_variants +python${python.version} -atlas -gcc43 -gcc44 -gcc45
+default_variants +python${python.version} -atlas -gcc43 -gcc44 -gcc45 -no_single -no_static
 
 master_sites        http://github.com/downloads/ecell/ecell3/
 distname            ${base_name}-${version}
