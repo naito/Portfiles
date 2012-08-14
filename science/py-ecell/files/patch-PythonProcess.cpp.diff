@@ -1,0 +1,23 @@
+--- ./ecell/dm/PythonProcess.cpp.orig	2012-01-21 21:40:02.000000000 +0900
++++ ./ecell/dm/PythonProcess.cpp	2012-08-14 12:50:58.000000000 +0900
+@@ -46,7 +46,7 @@
+ 
+         PROPERTYSLOT_SET_GET( Integer, IsContinuous );
+         PROPERTYSLOT_SET_GET( Real, StepInterval );
+-        PROPERTYSLOT_SET( Real, Flux );
++        PROPERTYSLOT_SET_GET_NO_LOAD_SAVE( Real, Flux );
+         PROPERTYSLOT_SET_GET( String, FireMethod );
+         PROPERTYSLOT_SET_GET( String, InitializeMethod );
+     }
+@@ -87,6 +87,11 @@
+         theStepInterval = value;
+     }
+ 
++    GET_METHOD( Real, Flux )
++    {
++        return getActivity();
++    }
++
+     SET_METHOD( String, FireMethod )
+     {
+         theFireMethod = value;
