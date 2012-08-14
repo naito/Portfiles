@@ -8,7 +8,7 @@ set base_name       "ecell"
 
 name                py-${base_name}
 version             3.2.3pre2
-revision            11
+revision            12
 categories          science
 maintainers         sfc.keio.ac.jp:ynaito
 license             GPLv2
@@ -48,18 +48,19 @@ if {${subport} != ${name}} {
   pre-destroot         {}
   extract.asroot       yes
 
-  patchfiles           patch-Makefile.in.diff\
-                       patch-Util.hpp.diff\
+  patchfiles           patch-Util.hpp.diff\
                        patch-PropertySlot.hpp.diff\
+                       patch-Makefile.in.diff\
                        patch-ExpressionCompiler.hpp.diff\
                        patch-ExpressionCompiler.cpp.diff\
+                       patch-PythonProcess.cpp.diff\
+                       patch-pyecell_setup.py.in.diff\
+                       patch-_ecs.cpp.diff\
                        patch-GtkSessionMonitor.py.diff\
+                       patch-MainWindow.py.diff\
                        patch-DigitalWindow.py.diff\
                        patch-PropertyWindow.py.diff\
-                       patch-pyecell_setup.py.in.diff\
                        patch-FileSelection.py.diff\
-                       patch-_ecs.cpp.diff\
-                       patch-PythonProcess.cpp.diff\
                        patch-Drosophila-python.em.diff
   
   depends_lib          port:py${python.version}-gtk \
