@@ -1,20 +1,23 @@
---- ./ecell/frontend/session-monitor/ecell/ui/osogo/GtkSessionMonitor.orig.py	2012-01-21 21:40:02.000000000 +0900
-+++ ./ecell/frontend/session-monitor/ecell/ui/osogo/GtkSessionMonitor.py	2012-02-24 17:21:26.000000000 +0900
-@@ -524,7 +524,7 @@
+--- ./ecell/frontend/session-monitor/ecell/ui/osogo/GtkSessionMonitor.py.orig	2012-01-21 21:40:02.000000000 +0900
++++ ./ecell/frontend/session-monitor/ecell/ui/osogo/GtkSessionMonitor.py	2012-08-15 00:07:21.000000000 +0900
+@@ -524,8 +524,9 @@
          self.theSession.restoreMessageMethod()
  
      def message( self, message ):
 -        self.theMessageMethod( message )
-+        self.setMessageMethod( message )
-         #self._synchronize()
+-        #self._synchronize()
++        if self.theMessageMethod is not None:
++            self.theMessageMethod( message )
++            #self._synchronize()
  
      def run( self , time = '' ):
-@@ -666,13 +666,13 @@
+         """ 
+@@ -666,13 +667,13 @@
          if self.theSession is None:
              raise Exception("Model is not loaded")
  
 -        return self.theSession.getEntityPropertyAttributes( fullPN )
-+        return self.theSession.getEntityPropertyAttributes( createFullPNString( fullPN ))
++        return self.theSession.getEntityPropertyAttributes( createFullPNString( fullPN ) )
  
      def setEntityProperty( self, fullPN, aValue ):
          if self.theSession is None:
