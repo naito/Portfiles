@@ -1,0 +1,27 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id$
+
+PortSystem 1.0
+
+name                ecell3-spatiocyte
+version             0.1
+revision            1
+categories          science
+maintainers         sfc.keio.ac.jp:ynaito
+platforms           darwin
+description         E-Cell3 Spatiocyte
+long_description    E-Cell3 Spatiocyte
+homepage            http://www.e-cell.org/
+master_sites        https://github.com/ecell/ecell3-spatiocyte/tarball/master
+distfiles           ecell-ecell3-spatiocyte-945d937.tar.gz
+distname            ${name}-${version}
+checksums           md5     a8ebfbe7670f5395856475e8a8e9a9e3 \
+                    sha1    f884d87ed39744ed7a1c81fe34ab02ef8030907f \
+                    rmd160  a028240ddb1e125b1c21d233401e9e88d066e092
+extract.suffix      .tar.gz
+depends_build       port:pkgconfig
+depends_lib         port:gtkglextmm \
+                    port:hdf5\
+                    port:py27-ecell
+configure.python    ${prefix}/bin/python2.7
+
