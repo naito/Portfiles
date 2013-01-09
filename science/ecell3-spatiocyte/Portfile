@@ -12,16 +12,15 @@ platforms           darwin
 description         E-Cell3 Spatiocyte
 long_description    E-Cell3 Spatiocyte
 homepage            http://www.e-cell.org/
-master_sites        https://github.com/ecell/ecell3-spatiocyte/tarball/master
-distfiles           ecell-ecell3-spatiocyte-945d937.tar.gz
-distname            ${name}-${version}
-checksums           md5     a8ebfbe7670f5395856475e8a8e9a9e3 \
-                    sha1    f884d87ed39744ed7a1c81fe34ab02ef8030907f \
-                    rmd160  a028240ddb1e125b1c21d233401e9e88d066e092
-extract.suffix      .tar.gz
+
+fetch.type          git
+git.url             https://github.com/ecell/ecell3-spatiocyte.git
+git.branch          9af774697d1fcdab21a5b90cfe14dc0f66fe5ef3
+
 depends_build       port:pkgconfig
 depends_lib         port:gtkglextmm \
                     port:hdf5\
                     port:py27-ecell
-configure.python    ${prefix}/bin/python2.7
+
+use_configure       no
 
