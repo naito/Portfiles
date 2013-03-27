@@ -3,33 +3,32 @@
 
 PortSystem          1.0
 PortGroup           python   1.0
+PortGroup           github  1.0
 
-set base_name       "ecell"
+name                py-ecell
+version             8d6cf43082a0b78ba9ba7e7f7822ed7d4951101a
+revision            0
 
-name                py-${base_name}
-version             3.2.3pre2
-revision            14
+github.setup        ecell ecell3 ${version}
+
 categories          science
 maintainers         sfc.keio.ac.jp:ynaito
 license             GPLv2
 homepage            http://www.e-cell.org/
+
 description         E-Cell Simulation Environment (E-Cell SE)
 long_description    E-Cell System is an object-oriented software suite \
 for modeling, simulation, and analysis of large scale complex systems \
 such as biological cells. Core part of the system, E-Cell Simulation \
 Environment version 3, allows many components driven by multiple \
 algorithms with different timescales to coexist.
-#conflicts           ecell py26-${base_name} py27-${base_name}
+#conflicts           ecell py26-ecell py27-ecell
 
 default_variants +python${python.version} -atlas -gcc43 -gcc44 -gcc45 -no_single -no_static
 
-master_sites        http://github.com/downloads/ecell/ecell3/
-distname            ${base_name}-${version}
-checksums           md5     4a343bd17e9754e127bb8a7b58cf0d9c \
-                    sha1    fe1cb44b1044b07c9a7084017b03fea4dad51b9a \
-                    rmd160  55153dfb8ddb38a632811ce0bd8a833ef8de66b3
-extract.suffix      .tar.bz2
-use_bzip2           yes
+checksums           md5     bb172026533da98c225113d14a6bc77c \
+                    sha1    a477eca4d6586eff559b957812d7b42ecad8fb80 \
+                    rmd160  1103da7de28d2a8195793950f84d2e1cbe3604df
 
 python.versions     26 27 
 python.default_version 27
@@ -48,20 +47,11 @@ if {${subport} != ${name}} {
   pre-destroot         {}
   extract.asroot       yes
 
-  patchfiles           patch-Util.hpp.diff\
-                       patch-PropertySlot.hpp.diff\
-                       patch-Makefile.in.diff\
-                       patch-ExpressionCompiler.hpp.diff\
-                       patch-ExpressionCompiler.cpp.diff\
-                       patch-PythonProcess.cpp.diff\
-                       patch-pyecell_setup.py.in.diff\
-                       patch-_ecs.cpp.diff\
-                       patch-GtkSessionMonitor.py.diff\
-                       patch-MainWindow.py.diff\
+  patchfiles           patch-pyecell_setup.py.in.diff\
                        patch-DigitalWindow.py.diff\
-                       patch-PropertyWindow.py.diff\
-                       patch-FileSelection.py.diff\
-                       patch-Drosophila-python.em.diff
+                       patch-Drosophila-python.em.diff\
+                       patch-Makefile.am.diff\
+                       patch-_ecs.cpp.diff
   
   depends_lib          port:py${python.version}-pygtk \
                        port:py${python.version}-numpy \
@@ -139,6 +129,10 @@ if {${subport} != ${name}} {
       system "install_name_tool ${changearg} ${prefix}/lib/libboost_python.dylib"
       system "install_name_tool ${changearg} ${prefix}/lib/libboost_python-mt.dylib"
   
+  }
+  
+  pre-configure {
+      system "cd ${worksrcpath} && ./autogen.sh"
   }
   
   pre-build {

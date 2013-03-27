@@ -1,6 +1,6 @@
---- ./ecell/pyecell/ecell/_ecs.cpp.orig	2012-01-21 21:40:02.000000000 +0900
-+++ ./ecell/pyecell/ecell/_ecs.cpp	2012-08-13 21:31:44.000000000 +0900
-@@ -1627,10 +1627,10 @@
+--- ./ecell/pyecell/ecell/_ecs.cpp.orig	2013-03-23 16:57:56.000000000 +0900
++++ ./ecell/pyecell/ecell/_ecs.cpp	2013-03-27 15:37:23.000000000 +0900
+@@ -1655,10 +1655,10 @@
      mutable String thePrivPrefix;
  };
  
@@ -13,7 +13,7 @@
  
      LIBECS_DM_INIT_PROP_INTERFACE()
      {
-@@ -1673,8 +1673,8 @@
+@@ -1709,8 +1709,8 @@
          return py::extract< bool >( anIsContinuousDescr.get() );
      }
  
@@ -24,7 +24,7 @@
  
      py::object theFireMethod;
  };
-@@ -1763,7 +1763,7 @@
+@@ -1818,7 +1818,7 @@
  };
  
  template<>
@@ -33,7 +33,7 @@
  
  template<>
  EntityType DeduceEntityType< PythonVariable >::value( EntityType::VARIABLE );
-@@ -2533,7 +2533,7 @@
+@@ -2587,7 +2587,7 @@
          switch ( aDMType.getType() )
          {
          case EntityType::PROCESS:
@@ -42,7 +42,7 @@
              break;
  
          case EntityType::VARIABLE:
-@@ -2846,7 +2846,7 @@
+@@ -2925,7 +2925,7 @@
      py::register_exception_translator< std::exception >( &translateException );
      py::register_exception_translator< std::range_error >( &translateRangeError );
      PythonVariable::addToRegistry();
@@ -51,11 +51,3 @@
      PythonSystem::addToRegistry();
  
      py::def( "getLibECSVersionInfo", &getLibECSVersionInfo );
-@@ -2987,6 +2987,7 @@
-         .add_property( "ID", &Entity::getID, &Entity::setID )
-         .add_property( "FullID", &Entity::getFullID )
-         .add_property( "Name", &Entity::getName, &Entity::setName )
-+        .def( "getSuperSystem", &Entity::getSuperSystem, return_existing_object() )
-         .def( "__setattr__", &EcsObject___setattr__< Entity > )
-         .def( "__getattr__", &EcsObject___getattr__< Entity > )
-         ;

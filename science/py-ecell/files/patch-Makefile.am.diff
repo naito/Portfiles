@@ -1,6 +1,6 @@
---- ./ecell/dm/Makefile.in.orig	2012-01-21 21:42:19.000000000 +0900
-+++ ./ecell/dm/Makefile.in	2012-08-13 21:33:14.000000000 +0900
-@@ -483,13 +483,13 @@
+--- ./ecell/dm/Makefile.am.orig	2013-03-23 16:57:56.000000000 +0900
++++ ./ecell/dm/Makefile.am	2013-03-27 16:27:58.000000000 +0900
+@@ -91,13 +91,13 @@
  all-local: $(SOS)
  
  PythonFluxProcess$(LTDL_SHLIB_EXT) : PythonFluxProcess.cpp
@@ -13,7 +13,7 @@
  
  .cpp$(LTDL_SHLIB_EXT):
 -	${ECELL3_DMC} --verbose --dmcompile="../../dmtool" --no-stdinclude --no-stdlibdir --ldflags="-L$(abs_top_builddir)/tmp$(libdir) $(LIBS) $(EXTRA_LDFLAGS)" --cxxflags='${CPPFLAGS} ${CXXFLAGS} $(EXTRA_CXXFLAGS) -I${top_srcdir}/libecs -I${top_srcdir}/.. -I${top_srcdir} -I${top_srcdir}/../libltdl  ${PYTHON_INCLUDES} ' -o $@ $< 
-+	${ECELL3_DMC} --verbose --dmcompile="../../dmtool" --no-stdinclude --no-stdlibdir --ldflags="-L$(abs_top_builddir)/tmp$(libdir) $(LIBS) $(EXTRA_LDFLAGS)" --cxxflags='${CPPFLAGS} $(EXTRA_CXXFLAGS) -I${top_srcdir}/libecs -I${top_srcdir}/.. -I${top_srcdir} -I${top_srcdir}/../libltdl  ${PYTHON_INCLUDES} ' -o $@ $< 
++	${ECELL3_DMC} --verbose --dmcompile="../../dmtool" --no-stdinclude --no-stdlibdir --ldflags="-L$(abs_top_builddir)/tmp$(libdir) -L@PREFIX@/Library/Frameworks/Python.framework/Versions/@PYTHON_VERSION@/lib/python@PYTHON_VERSION@/config -ldl -lpython@PYTHON_VERSION@ -l$(BOOST_PYTHON_LIBNAME) $(LIBS) $(EXTRA_LDFLAGS)" --cxxflags='${CPPFLAGS} -I${top_srcdir}/libecs -I${top_srcdir}/.. -I${top_srcdir} -I${top_srcdir}/../libltdl  ${PYTHON_INCLUDES} ' -o $@ $< 
  
  # This install customization is needed because DLL's cannot be loaded by
  # LoadLibrary() without executable flags set to them under Windows NT.
