@@ -4,12 +4,11 @@
 PortSystem          1.0
 PortGroup           python  1.0
 PortGroup           github  1.0
+github.setup        ecell ecell3 8d6cf43082a0b78ba9ba7e7f7822ed7d4951101a
 
 name                py-ecell
-version             8d6cf43082a0b78ba9ba7e7f7822ed7d4951101a
 revision            0
 
-github.setup        ecell ecell3 ${version}
 
 categories          science
 maintainers         sfc.keio.ac.jp:ynaito
