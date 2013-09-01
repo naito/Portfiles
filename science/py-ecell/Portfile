@@ -126,11 +126,11 @@ if {${subport} != ${name}} {
 #      /System/Library/Frameworks/Python.framework/Versions/${python.branch}/Python"
   
 # for python
-      set changearg "-change /System/Library/Frameworks/Python.framework/Versions/${python.branch}/Python \
-      ${prefix}/Library/Frameworks/Python.framework/Versions/${python.branch}/Python"
-  
-      system "install_name_tool ${changearg} ${prefix}/lib/libboost_python.dylib"
-      system "install_name_tool ${changearg} ${prefix}/lib/libboost_python-mt.dylib"
+#      set changearg "-change /System/Library/Frameworks/Python.framework/Versions/${python.branch}/Python \
+#      ${prefix}/Library/Frameworks/Python.framework/Versions/${python.branch}/Python"
+#  
+#      system "install_name_tool ${changearg} ${prefix}/lib/libboost_python.dylib"
+#      system "install_name_tool ${changearg} ${prefix}/lib/libboost_python-mt.dylib"
   
   }
   
