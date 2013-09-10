@@ -4,7 +4,7 @@
 PortSystem          1.0
 PortGroup           python  1.0
 PortGroup           github  1.0
-github.setup        ecell ecell3 8d6cf43082a0b78ba9ba7e7f7822ed7d4951101a
+github.setup        ecell ecell3 c63b469914ebd7990a643632181d1a9be1fe99f2
 
 name                py-ecell
 revision            0
@@ -25,9 +25,9 @@ algorithms with different timescales to coexist.
 
 default_variants +python${python.version} -atlas -gcc43 -gcc44 -gcc45 -no_single -no_static
 
-checksums           md5     bb172026533da98c225113d14a6bc77c \
-                    sha1    a477eca4d6586eff559b957812d7b42ecad8fb80 \
-                    rmd160  1103da7de28d2a8195793950f84d2e1cbe3604df
+checksums           md5     0652e3fda892e9e98db177340df5b210 \
+                    sha1    5e1cbaebbbceab1700276aaa39de38dba4e3e972 \
+                    rmd160  deceb28559a2dc988d9ec8a5329e3f8d9bc19945
 
 python.versions     26 27 
 python.default_version 27
@@ -97,11 +97,6 @@ if {${subport} != ${name}} {
               error "boost must be installed with the python${python.version} variant enabled."
       }
   
-  #    if {[variant_isset python27_apple]} {
-  #        system "sudo port select --set python python27-apple"
-  #    } else {
-  #        system "sudo port select --set python python27"
-  #    }
   }
   
   
@@ -113,26 +108,8 @@ if {${subport} != ${name}} {
           ln -s ${prefix}/lib/libboost_python-mt.dylib ${prefix}/lib/libboost_python.dylib
       }
   
-  #    if {[variant_isset python27_apple]} {
-  #        set changearg "-change ${prefix}/Library/Frameworks/Python.framework/Versions/${python.branch}/Python \
-  #        /System/Library/Frameworks/Python.framework/Versions/${python.branch}/Python"
-  #    } else {
-  #        set changearg "-change /System/Library/Frameworks/Python.framework/Versions/${python.branch}/Python \
-  #        ${prefix}/Library/Frameworks/Python.framework/Versions/${python.branch}/Python"
-  #    }
-  
-# for python-apple
-#      set changearg "-change ${prefix}/Library/Frameworks/Python.framework/Versions/${python.branch}/Python \
-#      /System/Library/Frameworks/Python.framework/Versions/${python.branch}/Python"
-  
-# for python
-#      set changearg "-change /System/Library/Frameworks/Python.framework/Versions/${python.branch}/Python \
-#      ${prefix}/Library/Frameworks/Python.framework/Versions/${python.branch}/Python"
-#  
-#      system "install_name_tool ${changearg} ${prefix}/lib/libboost_python.dylib"
-#      system "install_name_tool ${changearg} ${prefix}/lib/libboost_python-mt.dylib"
-  
   }
+  
   
   pre-configure {
       system "cd ${worksrcpath} && ./autogen.sh"
@@ -144,9 +121,4 @@ if {${subport} != ${name}} {
   post-destroot {
   }
   
-  #variant no_x11 {}
-  #variant quartz {}
-  
-  #variant ja {}
-
 }
