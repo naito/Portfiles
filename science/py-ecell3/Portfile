@@ -6,7 +6,7 @@ PortGroup           python  1.0
 PortGroup           github  1.0
 github.setup        ecell ecell3 c63b469914ebd7990a643632181d1a9be1fe99f2
 
-name                py-ecell
+name                py-ecell3
 revision            0
 
 
@@ -21,7 +21,6 @@ for modeling, simulation, and analysis of large scale complex systems \
 such as biological cells. Core part of the system, E-Cell Simulation \
 Environment version 3, allows many components driven by multiple \
 algorithms with different timescales to coexist.
-#conflicts           ecell py26-ecell py27-ecell
 
 default_variants +python${python.version} -atlas -gcc43 -gcc44 -gcc45 -no_single -no_static
 
