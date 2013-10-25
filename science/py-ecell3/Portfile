@@ -7,7 +7,7 @@ PortGroup           github  1.0
 github.setup        ecell ecell3 ea189fcc8e969e35054adc5edc349da4face1cf9
 
 name                py-ecell3
-revision            0
+revision            1
 
 
 categories          science
@@ -45,11 +45,12 @@ if {${subport} != ${name}} {
   pre-destroot         {}
   extract.asroot       yes
 
-  patchfiles           patch-pyecell_setup.py.in.diff\
+  patchfiles           patch-ecell-pyecell-setup.py.in.diff\
                        patch-DigitalWindow.py.diff\
                        patch-Drosophila-python.em.diff\
                        patch-Makefile.am.diff\
-                       patch-_ecs.cpp.diff
+                       patch-ecell-pyecell-ecell-_ecs.cpp.diff\
+                       patch-ecell-pyecell-ecell-LoggerStub.py.diff
   
   depends_lib          port:py${python.version}-pygtk \
                        port:py${python.version}-numpy \

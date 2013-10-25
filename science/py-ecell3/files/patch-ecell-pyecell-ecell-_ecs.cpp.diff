@@ -1,5 +1,5 @@
---- ./ecell/pyecell/ecell/_ecs.cpp.orig	2013-03-23 16:57:56.000000000 +0900
-+++ ./ecell/pyecell/ecell/_ecs.cpp	2013-03-27 15:37:23.000000000 +0900
+--- ./ecell/pyecell/ecell/_ecs.orig.cpp	2013-10-22 19:06:51.000000000 +0900
++++ ./ecell/pyecell/ecell/_ecs.cpp	2013-10-22 19:40:08.000000000 +0900
 @@ -1655,10 +1655,10 @@
      mutable String thePrivPrefix;
  };
@@ -33,7 +33,19 @@
  
  template<>
  EntityType DeduceEntityType< PythonVariable >::value( EntityType::VARIABLE );
-@@ -2587,7 +2587,7 @@
+@@ -2290,6 +2290,11 @@
+         return getLoggerBroker().getLogger( aFullPNString );
+     }
+ 
++    void removeLogger( String const& aFullPNString )
++    {
++        getLoggerBroker().removeLogger( FullPN( aFullPNString ) );
++    }
++
+     static char getDMSearchPathSeparator()
+     {
+         return Model::PATH_SEPARATOR;
+@@ -2587,7 +2592,7 @@
          switch ( aDMType.getType() )
          {
          case EntityType::PROCESS:
@@ -42,7 +54,7 @@
              break;
  
          case EntityType::VARIABLE:
-@@ -2925,7 +2925,7 @@
+@@ -2925,7 +2930,7 @@
      py::register_exception_translator< std::exception >( &translateException );
      py::register_exception_translator< std::range_error >( &translateRangeError );
      PythonVariable::addToRegistry();
@@ -51,3 +63,12 @@
      PythonSystem::addToRegistry();
  
      py::def( "getLibECSVersionInfo", &getLibECSVersionInfo );
+@@ -3221,6 +3226,8 @@
+               py::return_internal_reference<> () )
+         .def( "getLogger", &AbstractSimulator::getLogger,
+               py::return_internal_reference<>() )
++        .def( "removeLogger", &AbstractSimulator::removeLogger,
++              py::return_internal_reference<>() )                                // REMOVABLE?
+         .def( "getLoggerData", 
+               ( boost::shared_ptr< DataPointVector >( AbstractSimulator::* )(
+                     String const& ) const )

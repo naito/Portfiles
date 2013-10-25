@@ -1,0 +1,12 @@
+--- ./ecell/pyecell/setup.py.orig.in	2013-09-10 16:33:34.000000000 +0900
++++ ./ecell/pyecell/setup.py.in	2013-10-22 18:58:47.000000000 +0900
+@@ -10,6 +10,9 @@
+ from numpy.distutils.command.build_py import build_py as _build_py
+ from types import *
+ 
++sys.path.append("@PREFIX@/Library/Frameworks/Python.framework/Versions/@PYTHON_VERSION@/lib/python@PYTHON_VERSION@/site-packages")
++sys.path.append("@PREFIX@/lib/python@PYTHON_VERSION@/site-packages")
++
+ include_dirs = [
+     r'@DMTOOL_INCLUDE_DIR@',
+     os.environ['INCLTDL'][2:],
