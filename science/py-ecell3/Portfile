@@ -7,7 +7,7 @@ PortGroup           github  1.0
 github.setup        ecell ecell3 ea189fcc8e969e35054adc5edc349da4face1cf9
 
 name                py-ecell3
-revision            1
+revision            2
 
 
 categories          science
@@ -75,21 +75,6 @@ if {${subport} != ${name}} {
       configure.compiler llvm-gcc-4.2
   }
   
-  notes \
-  "**************************************************************************
-  To use ecell3-session-monitor, please set environment 
-  variable PYTHONPATH as following:
-  
-  For sh, bash:
-  export PYTHONPATH=\"${prefix}/Library/Frameworks/Python.framework/\\
-  Versions/${python.branch}/lib/python${python.branch}/site-packages:${prefix}/lib/python${python.branch}/site-packages\"
-  
-  For csh, tcsh:
-  setenv PYTHONPATH \"${prefix}/Library/Frameworks/Python.framework/\\
-  Versions/${python.branch}/lib/python${python.branch}/site-packages:${prefix}/lib/python${python.branch}/site-packages\"
-  **************************************************************************"
-  
-  
   pre-fetch {
   
       if {![file exists ${prefix}/lib/libboost_python-mt.a]} {
@@ -124,12 +109,6 @@ if {${subport} != ${name}} {
   }
   
   pre-build {
-  }
-  
-  post-build {
-      file delete ${worksrcpath}/ecell/frontend/session-monitor/build/scripts-${python.branch}/ecell3-session-monitor
-      file copy ${worksrcpath}/ecell/frontend/session-monitor/ecell3-session-monitor \
-          ${worksrcpath}/ecell/frontend/session-monitor/build/scripts-${python.branch}/ecell3-session-monitor
   }
   
 }
