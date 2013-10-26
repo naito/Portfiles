@@ -50,7 +50,10 @@ if {${subport} != ${name}} {
                        patch-Drosophila-python.em.diff\
                        patch-Makefile.am.diff\
                        patch-ecell-pyecell-ecell-_ecs.cpp.diff\
-                       patch-ecell-pyecell-ecell-LoggerStub.py.diff
+                       patch-ecell-pyecell-ecell-LoggerStub.py.diff\
+                       patch-ecell-frontend-session-monitor-Makefile.am.diff\
+                       patch-ecell-frontend-session-monitor-ecell3-session-monitor.diff\
+                       patch-ecell-configure.ac.in.diff
   
   depends_lib          port:py${python.version}-pygtk \
                        port:py${python.version}-numpy \
@@ -67,8 +70,9 @@ if {${subport} != ${name}} {
   configure.env-append ${env_PYTHONPATH}
   build.env-append     "${env_ARCHFLAGS} ${env_PYTHONPATH}"
   
-  if {${configure.compiler} == "clang"} {
-          configure.compiler llvm-gcc-4.2
+  if { ${os.major} < 13 && ${configure.compiler} == "clang" } {
+#      compiler.blacklist *clang*
+      configure.compiler llvm-gcc-4.2
   }
   
   notes \
@@ -110,6 +114,10 @@ if {${subport} != ${name}} {
   
   }
   
+  post-patch {
+      file rename ${worksrcpath}/ecell/frontend/session-monitor/ecell3-session-monitor \
+          ${worksrcpath}/ecell/frontend/session-monitor/ecell3-session-monitor.in
+  }
   
   pre-configure {
       system "cd ${worksrcpath} && ./autogen.sh"
@@ -118,7 +126,10 @@ if {${subport} != ${name}} {
   pre-build {
   }
   
-  post-destroot {
+  post-build {
+      file delete ${worksrcpath}/ecell/frontend/session-monitor/build/scripts-${python.branch}/ecell3-session-monitor
+      file copy ${worksrcpath}/ecell/frontend/session-monitor/ecell3-session-monitor \
+          ${worksrcpath}/ecell/frontend/session-monitor/build/scripts-${python.branch}/ecell3-session-monitor
   }
   
 }
