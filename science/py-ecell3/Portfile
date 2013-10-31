@@ -7,7 +7,7 @@ PortGroup           github  1.0
 github.setup        ecell ecell3 ea189fcc8e969e35054adc5edc349da4face1cf9
 
 name                py-ecell3
-revision            2
+revision            3
 
 
 categories          science
@@ -45,14 +45,15 @@ if {${subport} != ${name}} {
   pre-destroot         {}
   extract.asroot       yes
 
-  patchfiles           patch-ecell-pyecell-setup.py.in.diff\
-                       patch-DigitalWindow.py.diff\
-                       patch-Drosophila-python.em.diff\
-                       patch-Makefile.am.diff\
-                       patch-ecell-pyecell-ecell-_ecs.cpp.diff\
-                       patch-ecell-pyecell-ecell-LoggerStub.py.diff\
-                       patch-ecell-frontend-session-monitor-Makefile.am.diff\
-                       patch-ecell-frontend-session-monitor-ecell3-session-monitor.diff\
+  patchfiles           patch-ecell-pyecell-setup.py.in.diff \
+                       patch-ecell-frontend-session-monitor-plugins-DigitalWindow.py.diff \
+                       patch-doc-samples-Drosophila-Drosophila-python.em.diff \
+                       patch-ecell-dm-Makefile.am.diff \
+                       patch-ecell-pyecell-ecell-_ecs.cpp.diff \
+                       patch-ecell-pyecell-ecell-_ecs.cpp.noRemoveLogger.diff \
+                       patch-ecell-pyecell-ecell-LoggerStub.py.diff \
+                       patch-ecell-frontend-session-monitor-Makefile.am.diff \
+                       patch-ecell-frontend-session-monitor-ecell3-session-monitor.diff \
                        patch-ecell-configure.ac.in.diff
   
   depends_lib          port:py${python.version}-pygtk \
@@ -70,10 +71,7 @@ if {${subport} != ${name}} {
   configure.env-append ${env_PYTHONPATH}
   build.env-append     "${env_ARCHFLAGS} ${env_PYTHONPATH}"
   
-  if { ${os.major} < 13 && ${configure.compiler} == "clang" } {
-#      compiler.blacklist *clang*
-      configure.compiler llvm-gcc-4.2
-  }
+  configure.compiler clang
   
   pre-fetch {
   
@@ -99,9 +97,29 @@ if {${subport} != ${name}} {
   
   }
   
+  pre-patch {
+      file copy ${worksrcpath}/ecell/pyecell/ecell/_ecs.cpp \
+          ${worksrcpath}/ecell/pyecell/ecell/_ecs.cpp.noRemoveLogger
+      if { ${os.major} == 12 } {
+          file copy ${worksrcpath}/ecell/pyecell/ecell/LoggerStub.py \
+          ${worksrcpath}/ecell/pyecell/ecell/LoggerStub.py.orig
+      }
+  }
+  
   post-patch {
       file rename ${worksrcpath}/ecell/frontend/session-monitor/ecell3-session-monitor \
           ${worksrcpath}/ecell/frontend/session-monitor/ecell3-session-monitor.in
+          
+      if { ${os.major} == 12 } {
+          file delete ${worksrcpath}/ecell/pyecell/ecell/_ecs.cpp
+          file rename ${worksrcpath}/ecell/pyecell/ecell/_ecs.cpp.noRemoveLogger \
+              ${worksrcpath}/ecell/pyecell/ecell/_ecs.cpp
+          file delete ${worksrcpath}/ecell/pyecell/ecell/LoggerStub.py
+          file rename ${worksrcpath}/ecell/pyecell/ecell/LoggerStub.py.orig \
+              ${worksrcpath}/ecell/pyecell/ecell/LoggerStub.py
+      } else {
+          file delete ${worksrcpath}/ecell/pyecell/ecell/_ecs.cpp.noRemoveLogger
+      }
   }
   
   pre-configure {
