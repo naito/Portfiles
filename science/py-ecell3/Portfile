@@ -4,10 +4,10 @@
 PortSystem          1.0
 PortGroup           python  1.0
 PortGroup           github  1.0
-github.setup        ecell ecell3 ea189fcc8e969e35054adc5edc349da4face1cf9
+github.setup        ecell ecell3 8551f6e1420820284801ce34e9f3609f20cb5d8c
 
 name                py-ecell3
-revision            3
+revision            0
 
 
 categories          science
@@ -24,9 +24,9 @@ algorithms with different timescales to coexist.
 
 default_variants +python${python.version} -atlas -gcc43 -gcc44 -gcc45 -no_single -no_static
 
-checksums           md5     70158241895f7848ae85afa2de60eec0 \
-                    sha1    48d3d7acb8cb9a9c65867926470f8a379cbff084 \
-                    rmd160  69a61be8ca40232df620d166201b3e3af7522c50
+checksums           md5     4ca232871a17e70b64a7a713cbb4ed65 \
+                    sha1    9f5b414c9002f699c8db5ce5fd03e453e4005c1e \
+                    rmd160  7c5d4ee531d12a35555e8236e1b6871075804137
 
 python.versions     26 27 
 python.default_version 27
@@ -49,12 +49,7 @@ if {${subport} != ${name}} {
                        patch-ecell-frontend-session-monitor-plugins-DigitalWindow.py.diff \
                        patch-doc-samples-Drosophila-Drosophila-python.em.diff \
                        patch-ecell-dm-Makefile.am.diff \
-                       patch-ecell-pyecell-ecell-_ecs.cpp.diff \
-                       patch-ecell-pyecell-ecell-_ecs.cpp.noRemoveLogger.diff \
-                       patch-ecell-pyecell-ecell-LoggerStub.py.diff \
-                       patch-ecell-frontend-session-monitor-Makefile.am.diff \
-                       patch-ecell-frontend-session-monitor-ecell3-session-monitor.diff \
-                       patch-ecell-configure.ac.in.diff
+                       patch-ecell-pyecell-ecell-_ecs.cpp.diff
   
   depends_lib          port:py${python.version}-pygtk \
                        port:py${python.version}-numpy \
@@ -86,7 +81,6 @@ if {${subport} != ${name}} {
   
   }
   
-  
   pre-extract {
       if {![file exists ${prefix}/lib/libboost_python.a] && [file exists ${prefix}/lib/libboost_python-mt.a]} {
           ln -s ${prefix}/lib/libboost_python-mt.a ${prefix}/lib/libboost_python.a
@@ -95,31 +89,6 @@ if {${subport} != ${name}} {
           ln -s ${prefix}/lib/libboost_python-mt.dylib ${prefix}/lib/libboost_python.dylib
       }
   
-  }
-  
-  pre-patch {
-      file copy ${worksrcpath}/ecell/pyecell/ecell/_ecs.cpp \
-          ${worksrcpath}/ecell/pyecell/ecell/_ecs.cpp.noRemoveLogger
-      if { ${os.major} == 12 } {
-          file copy ${worksrcpath}/ecell/pyecell/ecell/LoggerStub.py \
-          ${worksrcpath}/ecell/pyecell/ecell/LoggerStub.py.orig
-      }
-  }
-  
-  post-patch {
-      file rename ${worksrcpath}/ecell/frontend/session-monitor/ecell3-session-monitor \
-          ${worksrcpath}/ecell/frontend/session-monitor/ecell3-session-monitor.in
-          
-      if { ${os.major} == 12 } {
-          file delete ${worksrcpath}/ecell/pyecell/ecell/_ecs.cpp
-          file rename ${worksrcpath}/ecell/pyecell/ecell/_ecs.cpp.noRemoveLogger \
-              ${worksrcpath}/ecell/pyecell/ecell/_ecs.cpp
-          file delete ${worksrcpath}/ecell/pyecell/ecell/LoggerStub.py
-          file rename ${worksrcpath}/ecell/pyecell/ecell/LoggerStub.py.orig \
-              ${worksrcpath}/ecell/pyecell/ecell/LoggerStub.py
-      } else {
-          file delete ${worksrcpath}/ecell/pyecell/ecell/_ecs.cpp.noRemoveLogger
-      }
   }
   
   pre-configure {

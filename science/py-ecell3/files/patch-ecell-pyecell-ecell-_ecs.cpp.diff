@@ -1,74 +1,111 @@
---- ./ecell/pyecell/ecell/_ecs.orig.cpp	2013-10-22 19:06:51.000000000 +0900
-+++ ./ecell/pyecell/ecell/_ecs.cpp	2013-10-22 19:40:08.000000000 +0900
+--- ./ecell/pyecell/ecell/_ecs.cpp.orig	2013-11-05 12:37:12.000000000 +0900
++++ ./ecell/pyecell/ecell/_ecs.cpp	2013-11-05 12:45:52.000000000 +0900
 @@ -1655,10 +1655,10 @@
      mutable String thePrivPrefix;
  };
  
 -class PythonProcess: public PythonEntityBase< PythonProcess, Process >
-+class PythonProcess__in_ecs_cpp__: public PythonEntityBase< PythonProcess__in_ecs_cpp__, Process >
++class PyecsProcess: public PythonEntityBase< PyecsProcess, Process >
  {
  public:
 -    virtual ~PythonProcess() {}
-+    virtual ~PythonProcess__in_ecs_cpp__() {}
++    virtual ~PyecsProcess() {}
  
      LIBECS_DM_INIT_PROP_INTERFACE()
      {
-@@ -1709,8 +1709,8 @@
+@@ -1709,14 +1709,14 @@
          return py::extract< bool >( anIsContinuousDescr.get() );
      }
  
 -    PythonProcess( PythonDynamicModule< PythonProcess > const& aModule )
 -        : PythonEntityBase< PythonProcess, Process >( aModule ) {}
-+    PythonProcess__in_ecs_cpp__( PythonDynamicModule< PythonProcess__in_ecs_cpp__ > const& aModule )
-+        : PythonEntityBase< PythonProcess__in_ecs_cpp__, Process >( aModule ) {}
++    PyecsProcess( PythonDynamicModule< PyecsProcess > const& aModule )
++        : PythonEntityBase< PyecsProcess, Process >( aModule ) {}
  
      py::object theFireMethod;
  };
-@@ -1818,7 +1818,7 @@
+ 
+ 
+-class PythonVariable: public PythonEntityBase< PythonVariable, Variable >
++class PyecsVariable: public PythonEntityBase< PyecsVariable, Variable >
+ {
+ public:
+     LIBECS_DM_INIT_PROP_INTERFACE()
+@@ -1776,14 +1776,14 @@
+         Variable::setValue( value );
+     }
+ 
+-    PythonVariable( PythonDynamicModule< PythonVariable > const& aModule )
+-        : PythonEntityBase< PythonVariable, Variable >( aModule ) {}
++    PyecsVariable( PythonDynamicModule< PyecsVariable > const& aModule )
++        : PythonEntityBase< PyecsVariable, Variable >( aModule ) {}
+ 
+     py::handle<> theOnValueChangingMethod;
+ };
+ 
+ 
+-class PythonSystem: public PythonEntityBase< PythonSystem, System >
++class PyecsSystem: public PythonEntityBase< PyecsSystem, System >
+ {
+ public:
+     LIBECS_DM_INIT_PROP_INTERFACE()
+@@ -1807,8 +1807,8 @@
+             meth.get()();
+     }
+ 
+-    PythonSystem( PythonDynamicModule< PythonSystem > const& aModule )
+-        : PythonEntityBase< PythonSystem, System >( aModule ) {}
++    PyecsSystem( PythonDynamicModule< PyecsSystem > const& aModule )
++        : PythonEntityBase< PyecsSystem, System >( aModule ) {}
+ };
+ 
+ template<typename T_>
+@@ -1818,13 +1818,13 @@
  };
  
  template<>
 -EntityType DeduceEntityType< PythonProcess >::value( EntityType::PROCESS );
-+EntityType DeduceEntityType< PythonProcess__in_ecs_cpp__ >::value( EntityType::PROCESS );
++EntityType DeduceEntityType< PyecsProcess >::value( EntityType::PROCESS );
  
  template<>
- EntityType DeduceEntityType< PythonVariable >::value( EntityType::VARIABLE );
-@@ -2290,6 +2290,11 @@
-         return getLoggerBroker().getLogger( aFullPNString );
-     }
+-EntityType DeduceEntityType< PythonVariable >::value( EntityType::VARIABLE );
++EntityType DeduceEntityType< PyecsVariable >::value( EntityType::VARIABLE );
  
-+    void removeLogger( String const& aFullPNString )
-+    {
-+        getLoggerBroker().removeLogger( FullPN( aFullPNString ) );
-+    }
-+
-     static char getDMSearchPathSeparator()
-     {
-         return Model::PATH_SEPARATOR;
-@@ -2587,7 +2592,7 @@
+ template<>
+-EntityType DeduceEntityType< PythonSystem >::value( EntityType::SYSTEM );
++EntityType DeduceEntityType< PyecsSystem >::value( EntityType::SYSTEM );
+ 
+ template< typename T_ >
+ class PythonDynamicModule: public DynamicModule< EcsObject >
+@@ -2592,15 +2592,15 @@
          switch ( aDMType.getType() )
          {
          case EntityType::PROCESS:
 -            aModule = new PythonDynamicModule< PythonProcess >( obj );
-+            aModule = new PythonDynamicModule< PythonProcess__in_ecs_cpp__ >( obj );
++            aModule = new PythonDynamicModule< PyecsProcess >( obj );
              break;
  
          case EntityType::VARIABLE:
-@@ -2925,7 +2930,7 @@
+-            aModule = new PythonDynamicModule< PythonVariable >( obj );
++            aModule = new PythonDynamicModule< PyecsVariable >( obj );
+             break;
+ 
+         case EntityType::SYSTEM:
+-            aModule = new PythonDynamicModule< PythonSystem >( obj );
++            aModule = new PythonDynamicModule< PyecsSystem >( obj );
+             break;
+ 
+         default:
+@@ -2929,9 +2929,9 @@
+     py::register_exception_translator< Exception >( &translateException );
      py::register_exception_translator< std::exception >( &translateException );
      py::register_exception_translator< std::range_error >( &translateRangeError );
-     PythonVariable::addToRegistry();
+-    PythonVariable::addToRegistry();
 -    PythonProcess::addToRegistry();
-+    PythonProcess__in_ecs_cpp__::addToRegistry();
-     PythonSystem::addToRegistry();
+-    PythonSystem::addToRegistry();
++    PyecsVariable::addToRegistry();
++    PyecsProcess::addToRegistry();
++    PyecsSystem::addToRegistry();
  
      py::def( "getLibECSVersionInfo", &getLibECSVersionInfo );
-@@ -3221,6 +3226,8 @@
-               py::return_internal_reference<> () )
-         .def( "getLogger", &AbstractSimulator::getLogger,
-               py::return_internal_reference<>() )
-+        .def( "removeLogger", &AbstractSimulator::removeLogger,
-+              py::return_internal_reference<>() )                                // REMOVABLE?
-         .def( "getLoggerData", 
-               ( boost::shared_ptr< DataPointVector >( AbstractSimulator::* )(
-                     String const& ) const )
+     py::def( "getLibECSVersion",     &getVersion );
