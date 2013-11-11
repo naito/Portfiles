@@ -1,0 +1,30 @@
+--- ./ecell/libecs/Logger.cpp.orig	2013-11-10 09:38:40.000000000 +0900
++++ ./ecell/libecs/Logger.cpp	2013-11-10 10:15:31.000000000 +0900
+@@ -39,6 +39,8 @@
+ #include "Logger.hpp"
+ #include "libecs/DataPointVector.hpp"
+ 
++#include <stdio.h>
++
+ namespace libecs
+ {
+ 
+@@ -49,6 +51,7 @@
+       theStepCounter( 0 ),
+       thePolicy( aPolicy )
+ {
++    std::puts( ".....Constructing Logger" );
+     thePhysicalLogger.setEndPolicy( aPolicy.doesContinueOnError() );
+     thePhysicalLogger.setMaxSize( aPolicy.getMaxSpace() );
+ }
+@@ -56,7 +59,10 @@
+ //Destructor
+ Logger::~Logger()
+ {
++    std::puts( ".....Destructing Logger(1)" );
++    if ( !theLoggerAdapter ) std::puts( ".....No LoggerAdapter" );
+     delete theLoggerAdapter;
++    std::puts( ".....Destructing Logger(2)" );
+ }
+ 
+ void Logger::setLoggerPolicy( Policy const& aPolicy )

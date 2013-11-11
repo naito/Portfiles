@@ -1,0 +1,19 @@
+--- ./ecell/libecs/LoggerAdapter.cpp.orig	2013-11-10 09:58:59.000000000 +0900
++++ ./ecell/libecs/LoggerAdapter.cpp	2013-11-10 09:59:19.000000000 +0900
+@@ -31,6 +31,8 @@
+ 
+ #include "LoggerAdapter.hpp"
+ 
++#include <stdio.h>
++
+ namespace libecs
+ {
+ 
+@@ -43,6 +45,7 @@
+ 
+ LIBECS_API LoggerAdapter::~LoggerAdapter()
+ {
++    std::puts( ".....Destructing LoggerAdapter" );
+     ; // do nothing
+ }
+ 

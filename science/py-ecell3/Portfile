@@ -49,7 +49,9 @@ if {${subport} != ${name}} {
                        patch-ecell-frontend-session-monitor-plugins-DigitalWindow.py.diff \
                        patch-doc-samples-Drosophila-Drosophila-python.em.diff \
                        patch-ecell-dm-Makefile.am.diff \
-                       patch-ecell-pyecell-ecell-_ecs.cpp.diff
+                       patch-ecell-pyecell-ecell-_ecs.cpp.diff \
+                       ecell-libecs-Logger.cpp.diff \
+                       ecell-libecs-LoggerAdapter.cpp.diff
   
   depends_lib          port:py${python.version}-pygtk \
                        port:py${python.version}-numpy \
