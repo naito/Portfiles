@@ -56,7 +56,7 @@ if {${subport} != ${name}} {
                        path:lib/libboost_python-mt.a:boost \
                        port:gsl \
                        port:py${python.version}-ply \
-                       port:py${python.version}-libsbml
+                       port:libsbml
   
   depends_build       port:libtool  \
                       port:autoconf \
