@@ -1,0 +1,70 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; truncate-lines: t; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:et:sw=4:ts=4:sts=4
+# $Id$
+
+PortSystem          1.0
+PortGroup           python  1.0
+
+name                py-libsbml
+version             5.9.0
+categories          science
+platforms           darwin
+maintainers         nomaintainer
+license             LGPL-2.1+
+
+description         The Systems Biology Markup Language library
+
+long_description    LibSBML is a free, open-source programming library to \
+                    help you read, write, manipulate, translate, and validate \
+                    SBML files and data streams. It is not an application \
+                    itself (though it does come with example programs), but \
+                    rather a library you can embed in your own applications.
+
+conflicts           libsbml
+
+homepage            http://sbml.org/Software/libSBML
+master_sites        sourceforge:project/sbml/libsbml/${version}/stable
+
+distname            libSBML-${version}-core-src
+worksrcdir          libsbml-${version}
+
+python.add_archflags no
+use_configure        yes
+build.cmd            make
+build.target         all
+destroot.cmd         ${build.cmd}
+destroot.target      install
+destroot.destdir     DESTDIR=${destroot}
+pre-destroot         {}
+extract.asroot       yes
+
+checksums           rmd160  8b930c6b5c90f27af89cc54c2def9f2f8803c82e \
+                    sha256  8991e4a6876721999433495b747b790af7981ae57b485e6c92b7fbb105bd7e96
+
+python.versions     26 27 31 32 33
+python.default_version 27
+
+if {${subport} != ${name}} {
+
+  depends_lib         port:python${python.version} \
+                      port:bzip2 \
+                      port:libxml2 \
+                      port:zlib
+  
+  set env_ARCHFLAGS   "ARCHFLAGS=\"-arch ${build_arch}\""
+  set env_PYTHONPATH  "PYTHONPATH=\"${prefix}/Library/Frameworks/Python.framework/Versions/${python.branch}/lib/python${python.branch}/site-packages:${prefix}/lib/python${python.branch}/site-packages\""
+  configure.env-append ${env_PYTHONPATH}
+  build.env-append     "${env_ARCHFLAGS} ${env_PYTHONPATH}"
+  
+  configure.args      --with-bzip2=${prefix} \
+                      --with-libxml=${prefix} \
+                      --with-zlib=${prefix} \
+                      --with-python=${prefix} \
+                      --with-python-interpreter=${prefix}/bin/python
+  
+  configure.ldflags-append -flat_namespace
+  
+  configure.universal_args-delete --disable-dependency-tracking
+  
+  livecheck.regex     /libSBML-(\[0-9.\]+)-core-src${extract.suffix}
+
+}
