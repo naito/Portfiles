@@ -4,10 +4,10 @@
 PortSystem          1.0
 PortGroup           python  1.0
 PortGroup           github  1.0
-github.setup        ecell ecell3 c1db6afa40af6713d16023646f0e6486a17e8f78
+github.setup        ecell ecell3 20140304
 
 name                py-ecell3
-revision            1
+revision            0
 
 
 categories          science
@@ -24,9 +24,9 @@ algorithms with different timescales to coexist.
 
 default_variants +python${python.version} -atlas -gcc43 -gcc44 -gcc45 -no_single -no_static
 
-checksums           md5     526d2aa6225ecdeb67f1fc238ee82b0d \
-                    sha1    aec5744e8788f35cb507734d13604706da38b9b4 \
-                    rmd160  44518eba2383a2670bf31aa1df22401153605821
+checksums           md5     af5adcda68646f29bb3f04e7c6e9319d \
+                    sha1    ba218f35d96b5a358c8dad24f0b6476a8c48f3bc \
+                    rmd160  b1688c39bcb3f9b0060f966bedb70e2d4aa1b53d
 
 python.versions     26 27 
 python.default_version 27
