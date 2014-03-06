@@ -7,7 +7,7 @@ PortGroup           github  1.0
 github.setup        ecell ecell3 20140304
 
 name                py-ecell3
-revision            0
+revision            1
 
 
 categories          science
@@ -56,7 +56,7 @@ if {${subport} != ${name}} {
                        path:lib/libboost_python-mt.a:boost \
                        port:gsl \
                        port:py${python.version}-ply \
-                       port:libsbml
+                       path:lib/python${python.branch}/site-packages/libsbml:libsbml
   
   depends_build       port:libtool  \
                       port:autoconf \
@@ -73,11 +73,48 @@ if {${subport} != ${name}} {
   
       if {![file exists ${prefix}/lib/libboost_python-mt.a]} {
           if {[file exists ${prefix}/lib/libboost_filesystem-mt.a]} {
-              ui_error "Please uninstall or deactivate the boost port and reinstall it by running `port install boost +python${python.version}`."
+              ui_error "
+######################################################################
+#                                                                    #
+#   Please uninstall or deactivate boost and reinstall it by         #
+#   running `port install boost +python${python.version}`.                          #
+#                                                                    #
+######################################################################"
           } else {
-              ui_error "Please install boost with the python${python.version} variant by running `port install boost +python${python.version}`."
+              ui_error "
+######################################################################
+#                                                                    #
+#   Please install boost with the python${python.version} variant    #
+#   by running `port install boost +python${python.version}`.                       #
+#                                                                    #
+######################################################################"
           }
-              error "boost must be installed with the python${python.version} variant enabled."
+          if {[file exists ${prefix}/lib/python${python.branch}/site-packages/libsbml]} {
+              error "boost must be installed with the python${python.version} variant."
+          } else {
+              ui_error "boost must be installed with the python${python.version} variant.\n"
+          }
+      }
+
+      if {![file exists ${prefix}/lib/python${python.branch}/site-packages/libsbml]} {
+          if {[file exists ${prefix}/lib/libsbml.a]} {
+              ui_error "
+######################################################################
+#                                                                    #
+#   Please uninstall or deactivate libsbml and reinstall it by       #
+#   running `port install libsbml +python${python.version}`.                        #
+#                                                                    #
+######################################################################"
+          } else {
+              ui_error "
+######################################################################
+#                                                                    #
+#   Please install libsbml with the python${python.version} variant  #
+#   by running `port install libsbml +python${python.version}`.                     #
+#                                                                    #
+######################################################################"
+          }
+              error "libsbml must be installed with the python${python.version} variant."
       }
   
   }
