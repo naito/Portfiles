@@ -4,7 +4,7 @@
 PortSystem          1.0
 PortGroup           python  1.0
 PortGroup           github  1.0
-github.setup        ecell ecell3 20140304
+github.setup        ecell ecell3 20140322
 
 name                py-ecell3
 revision            1
@@ -24,9 +24,9 @@ algorithms with different timescales to coexist.
 
 default_variants +python${python.version} -atlas -gcc43 -gcc44 -gcc45 -no_single -no_static
 
-checksums           md5     af5adcda68646f29bb3f04e7c6e9319d \
-                    sha1    ba218f35d96b5a358c8dad24f0b6476a8c48f3bc \
-                    rmd160  b1688c39bcb3f9b0060f966bedb70e2d4aa1b53d
+checksums           md5     278c9ca9590e402202e45c4fdeea9d56 \
+                    sha1    7237ac785e2f8ad64f70f77da8fcf1d880cbca4a \
+                    rmd160  4fee5afec1225c4fc806ba13c77fe6bdb0fe9021
 
 python.versions     26 27 
 python.default_version 27
@@ -47,7 +47,7 @@ if {${subport} != ${name}} {
 
   patchfiles           patch-ecell-pyecell-setup.py.in.diff \
                        patch-ecell-frontend-session-monitor-plugins-DigitalWindow.py.diff \
-                       patch-doc-samples-Drosophila-Drosophila-python.em.diff \
+                       patch-samples-Drosophila-Drosophila-python.em.diff \
                        patch-ecell-dm-Makefile.am.diff \
                        patch-ecell-pyecell-ecell-_ecs.cpp.diff
   
