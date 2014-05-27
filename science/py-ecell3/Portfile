@@ -7,7 +7,7 @@ PortGroup           github  1.0
 github.setup        ecell ecell3 20140322
 
 name                py-ecell3
-revision            1
+revision            2
 
 
 categories          science
@@ -56,7 +56,7 @@ if {${subport} != ${name}} {
                        path:lib/libboost_python-mt.a:boost \
                        port:gsl \
                        port:py${python.version}-ply \
-                       path:lib/python${python.branch}/site-packages/libsbml:libsbml
+                       path:lib/python${python.branch}/site-packages/libsbml:py${python.version}-libsbml
   
   depends_build       port:libtool  \
                       port:autoconf \
