@@ -5,7 +5,7 @@ PortSystem          1.0
 PortGroup           python  1.0
 
 name                py-libsbml
-version             5.9.0
+version             5.10.1
 categories          science
 platforms           darwin
 maintainers         nomaintainer
@@ -19,26 +19,22 @@ long_description    LibSBML is a free, open-source programming library to \
                     itself (though it does come with example programs), but \
                     rather a library you can embed in your own applications.
 
-conflicts           libsbml
+# conflicts           libsbml
 
 homepage            http://sbml.org/Software/libSBML
-master_sites        sourceforge:project/sbml/libsbml/${version}/stable
+# master_sites        sourceforge:project/sbml/libsbml/${version}/stable
+master_sites        http://pypi.python.org/packages/source/p/python-libsbml/
 
-distname            libSBML-${version}-core-src
-worksrcdir          libsbml-${version}
+distname            python-libsbml-${version}
+worksrcdir          python-libsbml-${version}
 
-python.add_archflags no
-use_configure        yes
-build.cmd            make
-build.target         all
-destroot.cmd         ${build.cmd}
-destroot.target      install
-destroot.destdir     DESTDIR=${destroot}
-pre-destroot         {}
-extract.asroot       yes
+# 5.9.0
+# checksums           rmd160  8b930c6b5c90f27af89cc54c2def9f2f8803c82e \
+#                     sha256  8991e4a6876721999433495b747b790af7981ae57b485e6c92b7fbb105bd7e96
 
-checksums           rmd160  8b930c6b5c90f27af89cc54c2def9f2f8803c82e \
-                    sha256  8991e4a6876721999433495b747b790af7981ae57b485e6c92b7fbb105bd7e96
+# 5.10.1
+checksums           rmd160  22d13afb97cc1dc750dbbd144a18390680b8353b \
+                    sha256  5c4d2af11b0f12e0ba4618f4ef34bf62a15b78dfe6f73913cc481e20c8406639
 
 python.versions     26 27 31 32 33
 python.default_version 27
@@ -46,25 +42,10 @@ python.default_version 27
 if {${subport} != ${name}} {
 
   depends_lib         port:python${python.version} \
+                      port:py${python.version}-setuptools \
                       port:bzip2 \
                       port:libxml2 \
-                      port:zlib
-  
-  set env_ARCHFLAGS   "ARCHFLAGS=\"-arch ${build_arch}\""
-  set env_PYTHONPATH  "PYTHONPATH=\"${prefix}/Library/Frameworks/Python.framework/Versions/${python.branch}/lib/python${python.branch}/site-packages:${prefix}/lib/python${python.branch}/site-packages\""
-  configure.env-append ${env_PYTHONPATH}
-  build.env-append     "${env_ARCHFLAGS} ${env_PYTHONPATH}"
-  
-  configure.args      --with-bzip2=${prefix} \
-                      --with-libxml=${prefix} \
-                      --with-zlib=${prefix} \
-                      --with-python=${prefix} \
-                      --with-python-interpreter=${prefix}/bin/python
-  
-  configure.ldflags-append -flat_namespace
-  
-  configure.universal_args-delete --disable-dependency-tracking
-  
-  livecheck.regex     /libSBML-(\[0-9.\]+)-core-src${extract.suffix}
+                      port:zlib \
+                      port:libsbml
 
 }

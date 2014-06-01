@@ -7,7 +7,7 @@ PortGroup           github  1.0
 github.setup        ecell ecell3 20140322
 
 name                py-ecell3
-revision            2
+revision            3
 
 
 categories          science
@@ -69,6 +69,8 @@ if {${subport} != ${name}} {
   
   configure.compiler clang
   
+  configure.args      --with-boost-python-libname=boost_python-mt
+  
   pre-fetch {
   
       if {![file exists ${prefix}/lib/libboost_python-mt.a]} {
@@ -96,38 +98,38 @@ if {${subport} != ${name}} {
           }
       }
 
-      if {![file exists ${prefix}/lib/python${python.branch}/site-packages/libsbml]} {
-          if {[file exists ${prefix}/lib/libsbml.a]} {
-              ui_error "
-######################################################################
-#                                                                    #
-#   Please uninstall or deactivate libsbml and reinstall it by       #
-#   running `port install libsbml +python${python.version}`.                        #
-#                                                                    #
-######################################################################"
-          } else {
-              ui_error "
-######################################################################
-#                                                                    #
-#   Please install libsbml with the python${python.version} variant  #
-#   by running `port install libsbml +python${python.version}`.                     #
-#                                                                    #
-######################################################################"
-          }
-              error "libsbml must be installed with the python${python.version} variant."
-      }
+#       if {![file exists ${prefix}/lib/python${python.branch}/site-packages/libsbml]} {
+#           if {[file exists ${prefix}/lib/libsbml.a]} {
+#               ui_error "
+# ######################################################################
+# #                                                                    #
+# #   Please uninstall or deactivate libsbml and reinstall it by       #
+# #   running `port install libsbml +python${python.version}`.                        #
+# #                                                                    #
+# ######################################################################"
+#           } else {
+#               ui_error "
+# ######################################################################
+# #                                                                    #
+# #   Please install libsbml with the python${python.version} variant  #
+# #   by running `port install libsbml +python${python.version}`.                     #
+# #                                                                    #
+# ######################################################################"
+#           }
+#               error "libsbml must be installed with the python${python.version} variant."
+#       }
   
   }
   
-  pre-extract {
-      if {![file exists ${prefix}/lib/libboost_python.a] && [file exists ${prefix}/lib/libboost_python-mt.a]} {
-          ln -s ${prefix}/lib/libboost_python-mt.a ${prefix}/lib/libboost_python.a
-      }
-      if {![file exists ${prefix}/lib/libboost_python.dylib] && [file exists ${prefix}/lib/libboost_python-mt.dylib]} {
-          ln -s ${prefix}/lib/libboost_python-mt.dylib ${prefix}/lib/libboost_python.dylib
-      }
-  
-  }
+#  pre-extract {
+#      if {![file exists ${prefix}/lib/libboost_python.a] && [file exists ${prefix}/lib/libboost_python-mt.a]} {
+#          ln -s ${prefix}/lib/libboost_python-mt.a ${prefix}/lib/libboost_python.a
+#      }
+#      if {![file exists ${prefix}/lib/libboost_python.dylib] && [file exists ${prefix}/lib/libboost_python-mt.dylib]} {
+#          ln -s ${prefix}/lib/libboost_python-mt.dylib ${prefix}/lib/libboost_python.dylib
+#      }
+#  
+#  }
   
   pre-configure {
       system "cd ${worksrcpath} && ./autogen.sh"
