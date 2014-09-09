@@ -7,7 +7,7 @@ PortGroup           github  1.0
 github.setup        ecell ecell3 20140902
 
 name                py-ecell3
-revision            6
+revision            7
 
 
 categories          science
@@ -54,6 +54,7 @@ if {${subport} != ${name}} {
   depends_lib          port:py${python.version}-pygtk \
                        port:py${python.version}-numpy \
                        port:py${python.version}-ipython \
+                       port:py${python.version}-matplotlib \
                        path:lib/libboost_python-mt.a:boost \
                        port:gsl \
                        port:py${python.version}-ply \
