@@ -4,10 +4,10 @@
 PortSystem          1.0
 PortGroup           python  1.0
 PortGroup           github  1.0
-github.setup        ecell ecell3 20140919
+github.setup        ecell ecell3 naito-Sprint2015
 
 name                py-ecell3
-revision            0
+revision            2015090103
 
 
 categories          science
@@ -24,9 +24,9 @@ algorithms with different timescales to coexist.
 
 default_variants +python${python.version} -atlas -gcc43 -gcc44 -gcc45 -no_single -no_static
 
-checksums           md5     b05ecc860b37e7a57ecd1da2f89b375c \
-                    sha1    15eefcdbc9b60eadbde84aaad63db9c524611135 \
-                    rmd160  0107fc88fa767c8602aeb023bbb77fdb8c0e958e
+checksums           md5     49e829c2f879091b7a57af937ed5326d \
+                    sha1    7463ecca6fde171a7f695600a054ce2df34f631f \
+                    rmd160  6722d2867504a0d78cbc038e46da16cd6440931c
 
 python.versions     26 27 
 python.default_version 27
@@ -75,21 +75,23 @@ if {${subport} != ${name}} {
   
   pre-fetch {
   
-      if {![file exists ${prefix}/lib/libboost_python-mt.a]} {
-          if {[file exists ${prefix}/lib/libboost_filesystem-mt.a]} {
+      set python_ver [format %2d ${python.version}]
+      set python_ver_q "${python_ver}`"
+      if {![llength [glob -nocomplain ${prefix}/lib/libboost_python*]]} {
+          if {[llength [glob -nocomplain ${prefix}/lib/libboost_system*]]} {
               ui_error "
 ######################################################################
 #                                                                    #
 #   Please uninstall or deactivate boost and reinstall it by         #
-#   running `port install boost +python${python.version}`.                          #
+#   running `port install boost +python${python_ver_q}.                          #
 #                                                                    #
 ######################################################################"
           } else {
               ui_error "
 ######################################################################
 #                                                                    #
-#   Please install boost with the python${python.version} variant    #
-#   by running `port install boost +python${python.version}`.                       #
+#   Please install boost with the python${python_ver} variant                   #
+#   by running `port install boost +python${python_ver_q}.                       #
 #                                                                    #
 ######################################################################"
           }
@@ -101,20 +103,20 @@ if {${subport} != ${name}} {
       }
 
 #       if {![file exists ${prefix}/lib/python${python.branch}/site-packages/libsbml]} {
-#           if {[file exists ${prefix}/lib/libsbml.a]} {
+#           if {[llength [glob -nocomplain ${prefix}/lib/libsbml.*]]} {
 #               ui_error "
 # ######################################################################
 # #                                                                    #
 # #   Please uninstall or deactivate libsbml and reinstall it by       #
-# #   running `port install libsbml +python${python.version}`.                        #
+# #   running `port install libsbml +python${python_ver_q}.                        #
 # #                                                                    #
 # ######################################################################"
 #           } else {
 #               ui_error "
 # ######################################################################
 # #                                                                    #
-# #   Please install libsbml with the python${python.version} variant  #
-# #   by running `port install libsbml +python${python.version}`.                     #
+# #   Please install libsbml with the python${python_ver} variant                 #
+# #   by running `port install libsbml +python${python_ver_q}.                     #
 # #                                                                    #
 # ######################################################################"
 #           }
