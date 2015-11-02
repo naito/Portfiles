@@ -24,9 +24,9 @@ algorithms with different timescales to coexist.
 
 default_variants +python${python.version} -atlas -gcc43 -gcc44 -gcc45 -no_single -no_static
 
-checksums           md5     49e829c2f879091b7a57af937ed5326d \
-                    sha1    7463ecca6fde171a7f695600a054ce2df34f631f \
-                    rmd160  6722d2867504a0d78cbc038e46da16cd6440931c
+checksums           md5     1a4d15e9509df58e9a631371652db7b6 \
+                    sha1    b30783f280d9f8a40669c90bd6311319b4cccc8b \
+                    rmd160  14e91a84cd799356e4b2fb7a89162bd80b36d360
 
 python.versions     26 27 
 python.default_version 27
