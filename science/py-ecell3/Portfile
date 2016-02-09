@@ -4,10 +4,10 @@
 PortSystem          1.0
 PortGroup           python  1.0
 PortGroup           github  1.0
-github.setup        ecell ecell3 naito-Sprint2015
+github.setup        ecell ecell3 master
 
 name                py-ecell3
-revision            2015090103
+revision            40a5a6d
 
 
 categories          science
@@ -24,9 +24,9 @@ algorithms with different timescales to coexist.
 
 default_variants +python${python.version} -atlas -gcc43 -gcc44 -gcc45 -no_single -no_static
 
-checksums           md5     1a4d15e9509df58e9a631371652db7b6 \
-                    sha1    b30783f280d9f8a40669c90bd6311319b4cccc8b \
-                    rmd160  14e91a84cd799356e4b2fb7a89162bd80b36d360
+checksums           md5     6b910236e0bcd6eb25e3cb9bc8e75459 \
+                    sha1    78b7130b20bcdc316643043f3fa8d34cf8669a01 \
+                    rmd160  2b3bb6481e12279f9f50d104f9ae5ec3b51b1256
 
 python.versions     26 27 
 python.default_version 27
